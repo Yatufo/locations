@@ -1,3 +1,5 @@
+const artoo = require('artoo-js');
+
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs: ['scrapper.js'],
@@ -8,13 +10,13 @@ exports.config = {
     }
   },
   onPrepare: () => {
-
-    console.log("prepare");
     var width = 1400;
     var height = 800;
     browser.driver.manage().window().setSize(width, height);
 
     browser.waitForAngularEnabled(false);
-    global.EC = protractor.ExpectedConditions
-  }
+    global.EC = protractor.ExpectedConditions;
+    global.artoo = artoo;
+  },
+  
 };
