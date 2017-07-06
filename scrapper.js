@@ -1,7 +1,7 @@
 describe('angularjs homepage todo list', function() {
   it('should add a todo', function() {
     // browser.get('http://www.centris.ca/en');
-    browser.get('http://www.centris.ca/fr/maison~a-vendre~saint-eustache/19167007?view=Summary');
+    browser.get('http://www.centris.ca/en/maison~a-vendre~saint-eustache/19167007?view=Summary');
 
     // //open the criterias
     // const advancedCriterias = element(by.css('#btn-advanced-criterias'));
@@ -35,6 +35,14 @@ describe('angularjs homepage todo list', function() {
     browser.driver.sleep(1000);
 
     browser.executeScript(() => {
+
+      const getRowSelector = (name) => {
+        return {
+          sel: 'tr:contains("' + name + '") td.last-child',
+          method: 'text'
+        };
+      };
+
       return artoo.scrape('#overview div.description', {
         score: {
           sel: 'div.walkscore',
@@ -48,15 +56,20 @@ describe('angularjs homepage todo list', function() {
           sel: '#BuyPrice',
           attr: 'content'
         },
-        revenu: {
-          sel: 'tr:contains("Potential gross revenue") td.last-child',
-          method: 'text'
-        }
+        revenu: getRowSelector("Potential gross revenue"),
+        usage: getRowSelector("Use of property"),
+        style: getRowSelector("Building style"),
+        year: getRowSelector("Year built"),
+        areaLot: getRowSelector("Lot area"),
+        parking: getRowSelector("Parking"),
+        fireplace: getRowSelector("Fireplace/Stove"),
+        units: getRowSelector("Number of units"),
+        residentialUnits: getRowSelector("Residential units"),
+        mainUnit: getRowSelector("Main unit"),
+        features: getRowSelector("Additional features")
       });
     }).then((result) => {
       console.log(result);
     });
   });
 });
-
-5, 6, 7
