@@ -1,8 +1,6 @@
-const artoo = require('artoo-js');
-
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs: ['scrapper.js'],
+  specs: ['scraper.js'],
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
@@ -16,7 +14,6 @@ exports.config = {
 
     browser.waitForAngularEnabled(false);
     global.EC = protractor.ExpectedConditions;
-    global.artoo = artoo;
   },
-  
+
 };
