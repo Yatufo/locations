@@ -1,8 +1,10 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
+const fs = require('fs');
+const writer = fs.createWriteStream("scrapeResults.json")
 
-describe('angularjs homepage todo list', function() {
+describe('real state information', function() {
 
-  it('should add a todo', function() {
+  it('get the details from the website', function() {
     browser.get('http://www.centris.ca/en');
 
     //open the criterias
@@ -12,7 +14,10 @@ describe('angularjs homepage todo list', function() {
 
     // select the criterias
     element(by.css('#item-property > button:nth-child(5)')).click() //plex
-    element(by.css('#search-form-bottom-actions > div > div > button.btn.btn-search')).click() // search
+    searchButton = element(by.css('#search-form-bottom-actions button.btn.btn-search'))
+    EC.elementToBeClickable(searchButton, 5000);
+    searchButton.click(); // search
+
     browser.driver.sleep(2000);
 
     // select order by more recent first
@@ -40,13 +45,17 @@ describe('angularjs homepage todo list', function() {
 
     browser.driver.sleep(1000);
 
-    const nextButton = element(by.css('#divWrapperPager > ul > li.next'))
+    const nextButton = element.all(by.css('#divWrapperPager > ul > li.next')).first();
     EC.elementToBeClickable(nextButton, 5000);
 
-    function afterScraping(result){
-        console.log(result);
-        nextButton.click();
-        scrape();
+    function afterScraping(result) {
+
+      writer.write(JSON.stringify(result) + ' , ', 'utf8', (e) => {
+        console.log(e ? e : 'saved id:' + result.id);
+      })
+
+      nextButton.click();
+      scrape();
     }
 
     function scrape() {

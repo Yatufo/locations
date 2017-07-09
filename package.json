@@ -6,6 +6,7 @@
     },
     "dependencies": {
         "artoo-js": "^0.3.4",
-        "sandcrawler": "beta"
+        "sandcrawler": "beta",
+        "protractor-html-screenshot-reporter": "latest"
     }
 }
