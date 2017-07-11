@@ -4,7 +4,7 @@ const writer = fs.createWriteStream("scrapeResults.json")
 
 describe('real state information', function() {
 
-  it('get the details from the website', function() {
+  it('get the details from the website', () => {
     browser.get('http://www.centris.ca/en');
 
     //open the criterias
@@ -49,7 +49,8 @@ describe('real state information', function() {
 
     const loadArtoo = browser.executeScript(() => {
       $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
-    });
+      window.scrapeDetails = eval(arguments[0]);
+    }, scrapeDetails.toString());
 
     browser.driver.sleep(3000);
 
@@ -73,7 +74,7 @@ describe('real state information', function() {
     }
 
     function scrape() {
-      const promisedResult = browser.executeScript(scrapeDetails);
+      const promisedResult = browser.executeScript("return scrapeDetails();");
       promisedResult.then(afterScraping);
       return promisedResult;
     }

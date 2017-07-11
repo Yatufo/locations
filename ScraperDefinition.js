@@ -1,6 +1,6 @@
 'use strict';
 
-function scrapeDetails() {
+const scrapeDetails = () => {
 
   const scrapeDetailsSchema = {
     id: () => {
@@ -57,15 +57,13 @@ function scrapeDetails() {
     return (numbersFound.length > 0) ? parseFloat(numbersFound[0].replace(',', '')) : null;
   };
 
-  return artoo.scrape('#overview div.description', scrapeDetailsSchema)
-  .map((details) => {
-    details.score = parseInt((details.score || '0').trim());
-    details.area = getNumberOnly(details.area);
-    details.revenue = getNumberOnly(details.revenue);
-    details.year = getNumberOnly(details.year);
+  const details = artoo.scrapeOne('#overview div.description', scrapeDetailsSchema);
+  details.score = parseInt((details.score || '0').trim());
+  details.area = getNumberOnly(details.area);
+  details.revenue = getNumberOnly(details.revenue);
+  details.year = getNumberOnly(details.year);
 
-    return details
-  })[0];
+  return details
 };
 
 module.exports = {
