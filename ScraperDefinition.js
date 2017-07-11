@@ -35,8 +35,8 @@ function scrapeDetails() {
       if (mapUrl) {
         const coords = mapUrl.match(pattern) || {};
         return result = {
-          lon: coords[0],
-          lat: coords[1]
+          lon: parseFloat(coords[0]),
+          lat: parseFloat(coords[1])
         };
       }
       return {};
