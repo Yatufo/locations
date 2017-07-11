@@ -47,18 +47,35 @@ describe('real state information', function() {
     browser.wait(EC.elementToBeClickable(nextButton), 5000);
 
 
-    const loadArtoo = browser.executeScript(() => {
-      $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
-      window.scrapeDetails = eval(arguments[0]);
-    }, scrapeDetails.toString());
+    function loadArtoo() {
+      const result = browser.executeScript(() => {
+        $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
+        window.scrapeDetails = eval(arguments[0]);
+      }, scrapeDetails.toString());
 
-    browser.driver.sleep(3000);
+      browser.driver.sleep(2000);
+
+      return result;
+    }
+
+    function reload(counter) {
+      const shouldReload = counter % 10 == 0;
+      if (shouldReload) {
+        console.log("reloading after scraping ten times");
+        browser.executeScript(() => {
+            location.reload();
+          })
+          .then(() => {
+            loadArtoo().then(scrape);
+          });
+      }
+      return shouldReload;
+    }
 
     let previous = '';
     let counter = 0;
 
     function afterScraping(result) {
-
       if (result.id != previous) {
         counter++;
         previous = result.id;
@@ -66,8 +83,9 @@ describe('real state information', function() {
           console.log(e ? e : 'saved id:' + result.id + ', counter:' + counter);
         });
 
-        nextButton.click().then(scrape);
-
+        if (!reload(counter)) {
+          nextButton.click().then(scrape);
+        }
       } else {
         scrape(); // try again.
       }
@@ -79,9 +97,8 @@ describe('real state information', function() {
       return promisedResult;
     }
 
-    loadArtoo.then(scrape);
+    loadArtoo().then(scrape);
 
   });
-
 
 });
