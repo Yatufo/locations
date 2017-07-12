@@ -6,7 +6,10 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
-      'args': ['--start-maximized']
+      'args': ['--start-maximized', '--no-sandbox', '--test-type=browser'],
+      'prefs' : {
+        'profile.managed_default_content_settings.images' : 2
+      }
     }
   },
   jasmineNodeOpts: {
@@ -26,6 +29,10 @@ exports.config = {
 
     browser.waitForAngularEnabled(false);
     global.EC = protractor.ExpectedConditions;
+    global.waitAndClick = (element, timeout) => {
+      browser.wait(EC.elementToBeClickable(element), timeout || 5000);
+      return element.click();
+    }
   },
 
 };
