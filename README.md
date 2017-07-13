@@ -13,14 +13,14 @@ From the root folder:
 
 Import the scraped data:
 ```
-mongoimport -h localhost:27017 --db realestate --collection estates --mode upsert --upsertFields id  --jsonArray data/estates.json
+mongoimport -h localhost:27017 --db realestate --collection locations --mode upsert --upsertFields id  --jsonArray data/locations.json
 mongoimport -h localhost:27017 --db realestate --collection interests  --jsonArray data/interests.json
 ```
 
 Create the index:
 ```
   use realestate
-  db.createCollection("estates")
-  db.estates.createIndex( { "id": 1 }, { unique: true  } )
-  db.estates.createIndex({ "location": "2dsphere"})
+  db.createCollection("locations")
+  db.locations.createIndex( { "id": 1 }, { unique: true  } )
+  db.locations.createIndex({ "location": "2dsphere"})
 ```

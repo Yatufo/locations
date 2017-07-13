@@ -1,6 +1,6 @@
 //Count by Id:
-db.getCollection('estates').count({})
-db.estates.aggregate({
+db.getCollection('locations').count({})
+db.locations.aggregate({
   $group: {
     _id: "$id",
     count: {
@@ -11,7 +11,7 @@ db.estates.aggregate({
 
 //Searches near one point
 db.runCommand({
-  geoNear: "estates",
+  geoNear: "locations",
   near: {
     type: "Point",
     coordinates: [45.446248, -73.603927]
@@ -21,7 +21,7 @@ db.runCommand({
 })
 
 //Transform all the data the location field
-db.estates.aggregate([{
+db.locations.aggregate([{
       $unset: { < field1 >: ""
         $addFields: {
           location: {
@@ -30,5 +30,5 @@ db.estates.aggregate([{
           }
         }
       }]).forEach(function(estate) {
-      db.estates.save(estate);
+      db.locations.save(estate);
     })
