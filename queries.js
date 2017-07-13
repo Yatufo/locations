@@ -22,13 +22,21 @@ db.runCommand({
 
 //Transform all the data the location field
 db.locations.aggregate([{
-      $unset: { < field1 >: ""
-        $addFields: {
-          location: {
-            type: "Point",
-            coordinates: ["$coord.lon", "$coord.lat"]
-          }
-        }
-      }]).forEach(function(estate) {
-      db.locations.save(estate);
-    })
+  $addFields: {
+    location: {
+      type: "Point",
+      coordinates: ["$coord.lon", "$coord.lat"]
+    }
+  }
+}]).forEach(function(estate) {
+  db.locations.save(estate);
+})
+
+//remove fields
+db.locations.update({}, {
+  $unset: {
+    coord: ""
+  }
+}, {
+  multi: true
+})
