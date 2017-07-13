@@ -1,6 +1,6 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
-const writer = fs.createWriteStream("scrapeResults.json", {
+const writer = fs.createWriteStream("data/estates.json", {
   flags: 'a',
   defaultEncoding: 'utf8'
 });
@@ -43,16 +43,20 @@ describe('real state information', function() {
 
     function nextSummary() {
       return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
-      .then(() => {return browser.driver.sleep(200)});
+        .then(() => {
+          return browser.driver.sleep(200)
+        });
     }
 
 
     function loadArtoo() {
       return browser.executeScript(() => {
-        $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
-        window.scrapeDetails = eval(arguments[0]);
-      }, scrapeDetails.toString())
-      .then(() => {return browser.driver.sleep(1000)});
+          $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
+          window.scrapeDetails = eval(arguments[0]);
+        }, scrapeDetails.toString())
+        .then(() => {
+          return browser.driver.sleep(1000)
+        });
     }
 
     function reload(counter, id) {
