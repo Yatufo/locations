@@ -1,7 +1,7 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
 const writer = fs.createWriteStream("scrapeResults.json");
-const RELOAD_AFTER_AMOUNT = 10;
+const RELOAD_AFTER_AMOUNT = 100;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
@@ -39,9 +39,7 @@ describe('real state information', function() {
     waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
 
     function nextSummary() {
-      const result = waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
-      browser.driver.sleep(1000);
-      return result;
+      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
     }
 
 
@@ -81,11 +79,11 @@ describe('real state information', function() {
           console.log(e ? e : 'saved id:' + result.id + ', counter:' + counter);
         });
 
-        counter++;
       } else {
         console.log("Ignoring already processed id:" + result.id);
       }
 
+      counter++;
       reload(counter, lastId).then(nextSummary).then(scrape);
     }
 

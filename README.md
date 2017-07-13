@@ -29,6 +29,3 @@ Count by Id:
   db.getCollection('estates').count({})
   db.estates.aggregate({ $group :{_id: "$id",  count: { $sum: 1 }}})
 ```
-
-
-$('#divWrapperPager > ul > li.next')[0].click();
