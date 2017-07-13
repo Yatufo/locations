@@ -1,14 +1,15 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
-const writer = fs.createWriteStream("scrapeResults.json")
-const RELOAD_AFTER_AMOUNT = 3
+const writer = fs.createWriteStream("scrapeResults.json");
+const RELOAD_AFTER_AMOUNT = 10;
+const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {
-  CHANGE_LANGUAGE : '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
-  BUTTON_CRITERIAS : '#btn-advanced-criterias',
+  CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
+  BUTTON_CRITERIAS: '#btn-advanced-criterias',
   OPTION_PLEX: '#item-property > button:nth-child(5)',
   BUTTON_SEARCH: '#search-form-bottom-actions button.btn.btn-search',
   SELECTOR_ORDER: '#selectSortById',
-  SELECT_RECENT:'#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
+  SELECT_RECENT: '#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
   BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
   BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next'
 };
@@ -38,7 +39,9 @@ describe('real state information', function() {
     waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
 
     function nextSummary() {
-      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
+      const result = waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
+      browser.driver.sleep(1000);
+      return result;
     }
 
 
@@ -58,14 +61,8 @@ describe('real state information', function() {
       if (shouldReload) {
         console.log("reloading after scraping (" + counter + ") times");
 
-        element(by.css(selectors.CHANGE_LANGUAGE)).getAttribute('href')
-        .then((url) => {
-          console.log(url);
-          browser.get(url.replace('/fr', '/en'));
-        });
-
-        browser.driver.sleep(1000);
-        return loadArtoo();
+        return browser.get(SUMARY_URL_BASE + id)
+        .then(loadArtoo);
       }
 
       return Promise.resolve();
@@ -74,22 +71,22 @@ describe('real state information', function() {
     let previous = '';
     let counter = 0;
     const scrapedIds = []
-
+    let lastId = ''
     function afterScraping(result) {
       if (!scrapedIds.includes(result.id)) {
+        lastId = result.id
         scrapedIds.push(result.id);
 
         writer.write(JSON.stringify(result) + ' , ', 'utf8', (e) => {
           console.log(e ? e : 'saved id:' + result.id + ', counter:' + counter);
         });
 
-        browser.driver.sleep(1000);
+        counter++;
       } else {
         console.log("Ignoring already processed id:" + result.id);
       }
 
-      counter++;
-      reload(counter).then(nextSummary).then(scrape);
+      reload(counter, lastId).then(nextSummary).then(scrape);
     }
 
     function scrape() {
