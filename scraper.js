@@ -42,19 +42,17 @@ describe('real state information', function() {
     waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
 
     function nextSummary() {
-      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
+      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
+      .then(() => {return browser.driver.sleep(200)});
     }
 
 
     function loadArtoo() {
-      const result = browser.executeScript(() => {
+      return browser.executeScript(() => {
         $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
         window.scrapeDetails = eval(arguments[0]);
-      }, scrapeDetails.toString());
-
-      browser.driver.sleep(1000);
-
-      return result;
+      }, scrapeDetails.toString())
+      .then(() => {return browser.driver.sleep(1000)});
     }
 
     function reload(counter, id) {
@@ -85,16 +83,13 @@ describe('real state information', function() {
         reload(counter, lastId).then(nextSummary).then(scrape);
       } else {
         console.log("Ignoring already processed id:" + result.id + 'and trying again');
-        browser.driver.sleep(500);
         scrape();
       }
 
     }
 
     function scrape() {
-      const promisedResult = browser.executeScript("return scrapeDetails();");
-      promisedResult.then(afterScraping);
-      return promisedResult;
+      return browser.executeScript("return scrapeDetails();").then(afterScraping);
     }
 
     loadArtoo().then(scrape());
