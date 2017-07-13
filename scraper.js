@@ -14,7 +14,8 @@ const selectors = {
   SELECTOR_ORDER: '#selectSortById',
   SELECT_RECENT: '#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
   BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
-  BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next'
+  BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next',
+  LABEL_PAGE_STATUS: '#divWrapperPager > ul > li.pager-current'
 };
 
 describe('real state information', function() {
@@ -43,7 +44,7 @@ describe('real state information', function() {
     function nextSummary() {
       return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
         .then(() => {
-          return browser.driver.sleep(200); // waits so the ajax call has time to come back.
+          return browser.driver.sleep(100); // waits so the ajax call has time to come back.
         });
     }
 
@@ -54,7 +55,7 @@ describe('real state information', function() {
           window.scrapeDetails = eval(arguments[0]);
         }, scrapeDetails.toString())
         .then(() => {
-          return browser.driver.sleep(1000);
+          return browser.driver.sleep(3000);
         });
     }
 

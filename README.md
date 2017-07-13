@@ -21,11 +21,6 @@ Create the index:
 ```
   use realestate
   db.createCollection("estates")
-  db.estates.createIndex( { "id": 1 }, { collation: { unique: true } } )
-```
-
-Count by Id:
-```
-  db.getCollection('estates').count({})
-  db.estates.aggregate({ $group :{_id: "$id",  count: { $sum: 1 }}})
+  db.estates.createIndex( { "id": 1 }, { unique: true  } )
+  db.estates.createIndex({ "location": "2dsphere"})
 ```

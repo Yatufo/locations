@@ -29,29 +29,29 @@ const scrapeDetails = () => {
     residentialUnits: getRowSelector("Residential units"),
     mainUnit: getRowSelector("Main unit"),
     features: getRowSelector("Additional features"),
-    coord: () => {
+    location: () => {
       const pattern = /-?\d+\.\d+/g;
       const mapUrl = $('li.onmap a').attr('onclick');
       if (mapUrl) {
         const coords = mapUrl.match(pattern) || {};
-        return result = {
-          lon: parseFloat(coords[0]),
-          lat: parseFloat(coords[1])
-        };
+        return {
+          type: "Point",
+          coordinates: [parseFloat(coords[0]), parseFloat(coords[1])]
+        }
       }
       return {};
     }
   };
 
 
-  function getRowSelector(name){
+  function getRowSelector(name) {
     return {
       sel: 'tr:contains("' + name + '") td.last-child',
       method: 'text'
     };
   };
 
-  function getNumberOnly(formattedString){
+  function getNumberOnly(formattedString) {
     const floatPattern = /\d+\,\d+/g;
     const numbersFound = formattedString.match(floatPattern) || [];
     return (numbersFound.length > 0) ? parseFloat(numbersFound[0].replace(',', '')) : null;
