@@ -1,6 +1,9 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
+  params: {
+    startId: undefined
+  },
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs: ['scraper.js'],
   capabilities: {

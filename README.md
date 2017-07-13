@@ -8,7 +8,7 @@ Start Selenium:
 
 From the root folder:
 
-```npm start```
+```protractor protractor.conf.js [--params.startId=id]```
 
 
 Import the scraped data:

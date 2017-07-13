@@ -38,13 +38,12 @@ describe('real state information', function() {
     waitAndClick(element(by.css(selectors.SELECT_RECENT)));
 
     //Summary Tab button
-    //waitAndClick(element.all(by.css('#divMainResult > div:nth-child(1) > div > div.description > a')).first());
     waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
 
     function nextSummary() {
       return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
         .then(() => {
-          return browser.driver.sleep(200)
+          return browser.driver.sleep(200); // waits so the ajax call has time to come back.
         });
     }
 
@@ -55,13 +54,13 @@ describe('real state information', function() {
           window.scrapeDetails = eval(arguments[0]);
         }, scrapeDetails.toString())
         .then(() => {
-          return browser.driver.sleep(1000)
+          return browser.driver.sleep(1000);
         });
     }
 
     function reload(counter, id) {
       const shouldReload = counter % RELOAD_AFTER_AMOUNT == 0;
-      if (shouldReload) {
+      if (shouldReload && id) {
         console.log("reloading after scraping (" + counter + ") times");
         return browser.get(SUMARY_URL_BASE + id).then(loadArtoo);
       }
@@ -72,11 +71,9 @@ describe('real state information', function() {
     let previous = '';
     let counter = 0;
     const scrapedIds = []
-    let lastId = ''
 
     function afterScraping(result) {
       if (!scrapedIds.includes(result.id)) {
-        lastId = result.id
         scrapedIds.push(result.id);
 
         writer.write(JSON.stringify(result) + ' , ', (e) => {
@@ -84,7 +81,7 @@ describe('real state information', function() {
         });
 
         counter++;
-        reload(counter, lastId).then(nextSummary).then(scrape);
+        reload(counter, result.id).then(nextSummary).then(scrape);
       } else {
         console.log("Ignoring already processed id:" + result.id + 'and trying again');
         scrape();
@@ -96,8 +93,9 @@ describe('real state information', function() {
       return browser.executeScript("return scrapeDetails();").then(afterScraping);
     }
 
-    loadArtoo().then(scrape());
-
+    reload(counter, browser.params.startId)
+    .then(loadArtoo())
+    .then(scrape());
   });
 
 });
