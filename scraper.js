@@ -1,6 +1,9 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
-const writer = fs.createWriteStream("scrapeResults.json");
+const writer = fs.createWriteStream("scrapeResults.json", {
+  flags: 'a',
+  defaultEncoding: 'utf8'
+});
 const RELOAD_AFTER_AMOUNT = 100;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {
@@ -58,9 +61,7 @@ describe('real state information', function() {
       const shouldReload = counter % RELOAD_AFTER_AMOUNT == 0;
       if (shouldReload) {
         console.log("reloading after scraping (" + counter + ") times");
-
-        return browser.get(SUMARY_URL_BASE + id)
-        .then(loadArtoo);
+        return browser.get(SUMARY_URL_BASE + id).then(loadArtoo);
       }
 
       return Promise.resolve();
@@ -70,21 +71,24 @@ describe('real state information', function() {
     let counter = 0;
     const scrapedIds = []
     let lastId = ''
+
     function afterScraping(result) {
       if (!scrapedIds.includes(result.id)) {
         lastId = result.id
         scrapedIds.push(result.id);
 
-        writer.write(JSON.stringify(result) + ' , ', 'utf8', (e) => {
+        writer.write(JSON.stringify(result) + ' , ', (e) => {
           console.log(e ? e : 'saved id:' + result.id + ', counter:' + counter);
         });
 
+        counter++;
+        reload(counter, lastId).then(nextSummary).then(scrape);
       } else {
-        console.log("Ignoring already processed id:" + result.id);
+        console.log("Ignoring already processed id:" + result.id + 'and trying again');
+        browser.driver.sleep(500);
+        scrape();
       }
 
-      counter++;
-      reload(counter, lastId).then(nextSummary).then(scrape);
     }
 
     function scrape() {
