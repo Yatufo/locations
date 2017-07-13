@@ -2,33 +2,43 @@ const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
 const writer = fs.createWriteStream("scrapeResults.json")
 const RELOAD_AFTER_AMOUNT = 3
+const selectors = {
+  CHANGE_LANGUAGE : '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
+  BUTTON_CRITERIAS : '#btn-advanced-criterias',
+  OPTION_PLEX: '#item-property > button:nth-child(5)',
+  BUTTON_SEARCH: '#search-form-bottom-actions button.btn.btn-search',
+  SELECTOR_ORDER: '#selectSortById',
+  SELECT_RECENT:'#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
+  BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
+  BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next'
+};
 
 describe('real state information', function() {
 
   it('get the details from the website', () => {
-    browser.get('http://www.centris.ca/en');
+    browser.get('/');
 
     //open the criterias
-    waitAndClick(element(by.css('#btn-advanced-criterias')));
+    waitAndClick(element(by.css(selectors.BUTTON_CRITERIAS)));
 
     // select the criterias
-    waitAndClick(element(by.css('#item-property > button:nth-child(5)')));
+    waitAndClick(element(by.css(selectors.OPTION_PLEX)));
 
     // search
-    waitAndClick(element(by.css('#search-form-bottom-actions button.btn.btn-search')));
+    waitAndClick(element(by.css(selectors.BUTTON_SEARCH)));
 
     // select order by more recent first
-    waitAndClick(element(by.css('#selectSortById')));
+    waitAndClick(element(by.css(selectors.SELECTOR_ORDER)));
 
     // order by the most recent first
-    waitAndClick(element(by.css('#selectSortById > div.dropdown.active > ul > li:nth-child(4)')));
+    waitAndClick(element(by.css(selectors.SELECT_RECENT)));
 
     //Summary Tab button
     //waitAndClick(element.all(by.css('#divMainResult > div:nth-child(1) > div > div.description > a')).first());
-    waitAndClick(element(by.css('#ButtonViewSummary')));
+    waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
 
     function nextSummary() {
-      return waitAndClick(element.all(by.css('#divWrapperPager > ul > li.next')).first());
+      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first());
     }
 
 
@@ -38,7 +48,7 @@ describe('real state information', function() {
         window.scrapeDetails = eval(arguments[0]);
       }, scrapeDetails.toString());
 
-      browser.driver.sleep(500);
+      browser.driver.sleep(1000);
 
       return result;
     }
@@ -47,10 +57,15 @@ describe('real state information', function() {
       const shouldReload = counter % RELOAD_AFTER_AMOUNT == 0;
       if (shouldReload) {
         console.log("reloading after scraping (" + counter + ") times");
-        return browser.executeScript(() => {
-            location.reload(true);
-          })
-          .then(loadArtoo)
+
+        element(by.css(selectors.CHANGE_LANGUAGE)).getAttribute('href')
+        .then((url) => {
+          console.log(url);
+          browser.get(url.replace('/fr', '/en'));
+        });
+
+        browser.driver.sleep(1000);
+        return loadArtoo();
       }
 
       return Promise.resolve();
@@ -83,7 +98,7 @@ describe('real state information', function() {
       return promisedResult;
     }
 
-    reload(0).then(scrape);
+    loadArtoo().then(scrape());
 
   });
 

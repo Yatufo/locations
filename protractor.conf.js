@@ -16,6 +16,7 @@ exports.config = {
     defaultTimeoutInterval: 1000000000,
     showColors: true
   },
+  baseUrl: 'http://www.centris.ca/en',
   onPrepare: () => {
     var width = 1440;
     var height = 900;
