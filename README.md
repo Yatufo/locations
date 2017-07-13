@@ -23,4 +23,5 @@ Create the index:
   db.createCollection("locations")
   db.locations.createIndex( { "id": 1 }, { unique: true  } )
   db.locations.createIndex({ "location": "2dsphere"})
+  db.interests.createIndex({ "location": "2dsphere"})
 ```

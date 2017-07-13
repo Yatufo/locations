@@ -40,7 +40,11 @@ const scrapeDetails = () => {
         }
       }
       return {};
+    },
+    timeStamp: () => {
+      return new Date().getTime();
     }
+
   };
 
 
