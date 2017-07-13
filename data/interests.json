@@ -1,0 +1,409 @@
+  [{
+  "name": "Angrignon",
+  "coord": {
+    "lat": 45.446248,
+    "lon": -73.603927
+  }
+}, {
+  "name": "Monk",
+  "coord": {
+    "lat": 45.450934,
+    "lon": -73.593445
+  }
+}, {
+  "name": "Jolicoeur",
+  "coord": {
+    "lat": 45.45675,
+    "lon": -73.582034
+  }
+}, {
+  "name": "Verdun",
+  "coord": {
+    "lat": 45.459153,
+    "lon": -73.57153
+  }
+}, {
+  "name": "De L'Église",
+  "coord": {
+    "lat": 45.461747,
+    "lon": -73.567451
+  }
+}, {
+  "name": "LaSalle",
+  "coord": {
+    "lat": 45.470612,
+    "lon": -73.567646
+  }
+}, {
+  "name": "Charlevoix",
+  "coord": {
+    "lat": 45.478157,
+    "lon": -73.56933
+  }
+}, {
+  "name": "Lionel-Groulx",
+  "coord": {
+    "lat": 45.482827,
+    "lon": -73.579716
+  }
+}, {
+  "name": "Atwater",
+  "coord": {
+    "lat": 45.489593,
+    "lon": -73.584088
+  }
+}, {
+  "name": "Guy-Concordia",
+  "coord": {
+    "lat": 45.494493,
+    "lon": -73.580772
+  }
+}, {
+  "name": "Peel",
+  "coord": {
+    "lat": 45.500842,
+    "lon": -73.574501
+  }
+}, {
+  "name": "McGill",
+  "coord": {
+    "lat": 45.504235,
+    "lon": -73.571574
+  }
+}, {
+  "name": "Place-des-Arts",
+  "coord": {
+    "lat": 45.507326,
+    "lon": -73.569482
+  }
+}, {
+  "name": "Saint-Laurent",
+  "coord": {
+    "lat": 45.510839,
+    "lon": -73.564819
+  }
+}, {
+  "name": "Berri-UQAM",
+  "coord": {
+    "lat": 45.514887,
+    "lon": -73.559727
+  }
+}, {
+  "name": "Beaudry",
+  "coord": {
+    "lat": 45.519156,
+    "lon": -73.555444
+  }
+}, {
+  "name": "Papineau",
+  "coord": {
+    "lat": 45.524065,
+    "lon": -73.55312
+  }
+}, {
+  "name": "Frontenac",
+  "coord": {
+    "lat": 45.533349,
+    "lon": -73.552244
+  }
+}, {
+  "name": "Préfontaine",
+  "coord": {
+    "lat": 45.541515,
+    "lon": -73.554379
+  }
+}, {
+  "name": "Joliette",
+  "coord": {
+    "lat": 45.54655,
+    "lon": -73.551714
+  }
+}, {
+  "name": "Pie-IX",
+  "coord": {
+    "lat": 45.553326,
+    "lon": -73.551964
+  }
+}, {
+  "name": "Viau",
+  "coord": {
+    "lat": 45.560602,
+    "lon": -73.547361
+  }
+}, {
+  "name": "Assomption",
+  "coord": {
+    "lat": 45.569264,
+    "lon": -73.546739
+  }
+}, {
+  "name": "Cadillac",
+  "coord": {
+    "lat": 45.576647,
+    "lon": -73.547004
+  }
+}, {
+  "name": "Langelier",
+  "coord": {
+    "lat": 45.583093,
+    "lon": -73.54279
+  }
+}, {
+  "name": "Radisson",
+  "coord": {
+    "lat": 45.5893,
+    "lon": -73.539592
+  }
+}, {
+  "name": "Honoré-Beaugrand",
+  "coord": {
+    "lat": 45.596796,
+    "lon": -73.534401
+  }
+}, {
+  "name": "Côte-Vertu",
+  "coord": {
+    "lat": 45.514212,
+    "lon": -73.684174
+  }
+}, {
+  "name": "Du Collège",
+  "coord": {
+    "lat": 45.509445,
+    "lon": -73.674683
+  }
+}, {
+  "name": "De La Savane",
+  "coord": {
+    "lat": 45.500345,
+    "lon": -73.661544
+  }
+}, {
+  "name": "Namur",
+  "coord": {
+    "lat": 45.495029,
+    "lon": -73.652192
+  }
+}, {
+  "name": "Plamondon",
+  "coord": {
+    "lat": 45.4962,
+    "lon": -73.641452
+  }
+}, {
+  "name": "Côte-Sainte-Catherine",
+  "coord": {
+    "lat": 45.492376,
+    "lon": -73.63333
+  }
+}, {
+  "name": "Snowdon",
+  "coord": {
+    "lat": 45.485482,
+    "lon": -73.627969
+  }
+}, {
+  "name": "Villa-Maria",
+  "coord": {
+    "lat": 45.479704,
+    "lon": -73.619643
+  }
+}, {
+  "name": "Vendôme",
+  "coord": {
+    "lat": 45.473875,
+    "lon": -73.603794
+  }
+}, {
+  "name": "Place-Saint-Henri",
+  "coord": {
+    "lat": 45.477273,
+    "lon": -73.586541
+  }
+}, {
+  "name": "Georges-Vanier",
+  "coord": {
+    "lat": 45.488901,
+    "lon": -73.5765
+  }
+}, {
+  "name": "Lucien-L'Allier",
+  "coord": {
+    "lat": 45.495021,
+    "lon": -73.570934
+  }
+}, {
+  "name": "Bonaventure",
+  "coord": {
+    "lat": 45.498034,
+    "lon": -73.566811
+  }
+}, {
+  "name": "Square-Victoria-OAC",
+  "coord": {
+    "lat": 45.501697,
+    "lon": -73.563831
+  }
+}, {
+  "name": "Place-d'Armes",
+  "coord": {
+    "lat": 45.505005,
+    "lon": -73.559596
+  }
+}, {
+  "name": "Champ-de-Mars",
+  "coord": {
+    "lat": 45.510204,
+    "lon": -73.556559
+  }
+}, {
+  "name": "Sherbrooke",
+  "coord": {
+    "lat": 45.518225,
+    "lon": -73.568261
+  }
+}, {
+  "name": "Mont-Royal",
+  "coord": {
+    "lat": 45.524284,
+    "lon": -73.581551
+  }
+}, {
+  "name": "Laurier",
+  "coord": {
+    "lat": 45.527166,
+    "lon": -73.586903
+  }
+}, {
+  "name": "Rosemont",
+  "coord": {
+    "lat": 45.530972,
+    "lon": -73.597238
+  }
+}, {
+  "name": "Beaubien",
+  "coord": {
+    "lat": 45.535439,
+    "lon": -73.604561
+  }
+}, {
+  "name": "Jean-Talon",
+  "coord": {
+    "lat": 45.539557,
+    "lon": -73.613641
+  }
+}, {
+  "name": "Jarry",
+  "coord": {
+    "lat": 45.543272,
+    "lon": -73.628232
+  }
+}, {
+  "name": "Crémazie",
+  "coord": {
+    "lat": 45.546234,
+    "lon": -73.639266
+  }
+}, {
+  "name": "Sauvé",
+  "coord": {
+    "lat": 45.550659,
+    "lon": -73.656465
+  }
+}, {
+  "name": "Henri-Bourassa",
+  "coord": {
+    "lat": 45.556066,
+    "lon": -73.667348
+  }
+}, {
+  "name": "Cartier",
+  "coord": {
+    "lat": 45.5601,
+    "lon": -73.681804
+  }
+}, {
+  "name": "De La Concorde",
+  "coord": {
+    "lat": 45.560858,
+    "lon": -73.709751
+  }
+}, {
+  "name": "Montmorency",
+  "coord": {
+    "lat": 45.55828,
+    "lon": -73.720406
+  }
+}, {
+  "name": "Jean-Drapeau",
+  "coord": {
+    "lat": 45.511681,
+    "lon": -73.532256
+  }
+}, {
+  "name": "Longueuil",
+  "coord": {
+    "lat": 45.524909,
+    "lon": -73.522052
+  }
+}, {
+  "name": "Côte-des-Neiges",
+  "coord": {
+    "lat": 45.496248,
+    "lon": -73.622547
+  }
+}, {
+  "name": "Université-de-Montréal",
+  "coord": {
+    "lat": 45.504028,
+    "lon": -73.618055
+  }
+}, {
+  "name": "Édouard-Montpetit",
+  "coord": {
+    "lat": 45.510123,
+    "lon": -73.612494
+  }
+}, {
+  "name": "Outremont",
+  "coord": {
+    "lat": 45.520072,
+    "lon": -73.614906
+  }
+}, {
+  "name": "Acadie",
+  "coord": {
+    "lat": 45.523414,
+    "lon": -73.623683
+  }
+}, {
+  "name": "Parc",
+  "coord": {
+    "lat": 45.510326,
+    "lon": -73.575031
+  }
+}, {
+  "name": "De Castelnau",
+  "coord": {
+    "lat": 45.535186,
+    "lon": -73.619628
+  }
+}, {
+  "name": "Fabre",
+  "coord": {
+    "lat": 45.546614,
+    "lon": -73.608121
+  }
+}, {
+  "name": "D'Iberville",
+  "coord": {
+    "lat": 45.5538,
+    "lon": -73.602089
+  }
+}, {
+  "name": "Saint-Michel",
+  "coord": {
+    "lat": 45.559709,
+    "lon": -73.599752
+  }
+}]
