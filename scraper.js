@@ -1,6 +1,6 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
-const writer = fs.createWriteStream("data/locations.json", {
+const writer = fs.createWriteStream("data/estates.json", {
   flags: 'a',
   defaultEncoding: 'utf8'
 });
