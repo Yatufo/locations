@@ -18,6 +18,7 @@ db.estates.aggregate([{
     }
   }
 }]).forEach(function(estate) {
+  estate.ratio = Math.round((estate.revenue / estate.price) * 100);
   db.estates.save(estate);
 })
 
@@ -25,7 +26,7 @@ db.estates.aggregate([{
 db.estates.update({}, {
   $unset: {
     coord: "",
-    distances: "" 
+    distances: "",
   }
 }, {
   multi: true
@@ -34,7 +35,7 @@ db.estates.update({}, {
 /// Update distances to points of interest.
 function updateInterestDistance(interest, nearResult) {
   var id = nearResult.obj._id;
-  var distance = nearResult.dis;
+  var distance = Math.round(nearResult.dis);
 
   return db.estates.update({
     _id: id
@@ -57,12 +58,12 @@ Searches all the estates near one point
     coordinates: [45.446248, -73.603927]
   }
 **/
-function findEstatesNearBy(location) {
+function findEstatesNearBy(location, maxDistance) {
   return db.runCommand({
     geoNear: "estates",
     near: location,
     spherical: true,
-    maxDistance: 1000
+    maxDistance: maxDistance
   });
 }
 
@@ -71,9 +72,10 @@ function findEstatesNearBy(location) {
 /**
   Updates the distances from all points of interest for all the estates.
 **/
+var MAX_DISTACE = 1000; // One kilometer.
 db.interests.aggregate()
   .forEach(function(interest) {
-    findEstatesNearBy(interest.location).results
+    findEstatesNearBy(interest.location, MAX_DISTACE).results
       .forEach(function(result) {
         updateInterestDistance(interest, result)
       });
@@ -92,3 +94,20 @@ db.system.js.save({
 
 // load script to be able to use them in mongo.
 db.loadServerScripts();
+
+
+// estates close to any interest
+db.estates.find({
+  distances: {
+    '$exists': true
+  }, revenue : { '$gt' : 0 }
+}, {
+  id: 1,
+  price: 1,
+  revenue: 1,
+  'location.coordinates': 1
+}).map(function(estate) {
+    estate.url = 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id;
+    estate.ratio = Math.round((estate.revenue / estate.price) * 100);
+    return estate;
+})
