@@ -22,6 +22,15 @@ db.estates.aggregate([{
   db.estates.save(estate);
 })
 
+// Transforming the old way
+db.estates.find({}).map(function(estate) {
+    estate.calculated = { url : 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id,
+      					 ratio : Math.round((estate.revenue / estate.price) * 100)};
+    db.estates.save(estate);
+    return estate;
+})
+
+
 //remove fields
 db.estates.update({}, {
   $unset: {
@@ -31,6 +40,29 @@ db.estates.update({}, {
 }, {
   multi: true
 })
+
+/**
+  Updates the distances from all points of interest for all the estates.
+**/
+db.interests.aggregate()
+  .forEach(function(interest) {
+    findEstatesNearBy(interest.location, 500).results
+      .forEach(function(result) {
+        updateInterestDistance(interest, result)
+      });
+  })
+
+
+//register functions in mongo
+db.system.js.save({
+  _id: 'findEstatesNearBy',
+  value: findEstatesNearBy
+})
+db.system.js.save({
+  _id: 'updateInterestDistance',
+  value: updateInterestDistance
+});
+
 
 /// Update distances to points of interest.
 function updateInterestDistance(interest, nearResult) {
@@ -68,30 +100,6 @@ function findEstatesNearBy(location, maxDistance) {
 }
 
 
-
-/**
-  Updates the distances from all points of interest for all the estates.
-**/
-var MAX_DISTACE = 1000; // One kilometer.
-db.interests.aggregate()
-  .forEach(function(interest) {
-    findEstatesNearBy(interest.location, MAX_DISTACE).results
-      .forEach(function(result) {
-        updateInterestDistance(interest, result)
-      });
-  })
-
-
-//register functions in mongo
-db.system.js.save({
-  _id: 'findEstatesNearBy',
-  value: findEstatesNearBy
-})
-db.system.js.save({
-  _id: 'updateInterestDistance',
-  value: updateInterestDistance
-});
-
 // load script to be able to use them in mongo.
 db.loadServerScripts();
 
@@ -105,9 +113,6 @@ db.estates.find({
   id: 1,
   price: 1,
   revenue: 1,
-  'location.coordinates': 1
-}).map(function(estate) {
-    estate.url = 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id;
-    estate.ratio = Math.round((estate.revenue / estate.price) * 100);
-    return estate;
-})
+  'location.coordinates': 1,
+  calculated: 1
+}).sort({ "calculated.ratio" : -1});
