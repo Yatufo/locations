@@ -3,3 +3,4 @@ node_modules/**
 *.DS_Store
 data/estates*.json
 data/locations*.json
+data/**/*.csv

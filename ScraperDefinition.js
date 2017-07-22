@@ -41,10 +41,9 @@ const scrapeDetails = () => {
       }
       return {};
     },
-    timeStamp: () => {
+    timestamp: () => {
       return new Date().getTime();
     }
-
   };
 
 
@@ -66,6 +65,14 @@ const scrapeDetails = () => {
   details.area = getNumberOnly(details.area);
   details.revenue = getNumberOnly(details.revenue);
   details.year = getNumberOnly(details.year);
+
+
+  const integerPattern = /\d+/g;
+  const numbersFound = details.units.match(integerPattern) || [];
+  details.units = {
+    residential: numbersFound[0] ? parseInt(numbersFound[0]) : 0,
+    commercial: numbersFound[1] ? parseInt(numbersFound[1]): 0
+  }
 
   return details
 };

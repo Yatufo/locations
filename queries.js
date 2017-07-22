@@ -24,10 +24,12 @@ db.estates.aggregate([{
 
 // Transforming the old way
 db.estates.find({}).map(function(estate) {
-    estate.calculated = { url : 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id,
-      					 ratio : Math.round((estate.revenue / estate.price) * 100)};
-    db.estates.save(estate);
-    return estate;
+  estate.calculated = {
+    url: 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id,
+    ratio: Math.round((estate.revenue / estate.price) * 100)
+  };
+  db.estates.save(estate);
+  return estate;
 })
 
 
@@ -46,7 +48,7 @@ db.estates.update({}, {
 **/
 db.interests.aggregate()
   .forEach(function(interest) {
-    findEstatesNearBy(interest.location, 500).results
+    findEstatesNearBy(interest.location, 1000).results
       .forEach(function(result) {
         updateInterestDistance(interest, result)
       });
@@ -108,11 +110,12 @@ db.loadServerScripts();
 db.estates.find({
   distances: {
     '$exists': true
-  }, revenue : { '$gt' : 0 }
-}, {
-  id: 1,
-  price: 1,
-  revenue: 1,
-  'location.coordinates': 1,
-  calculated: 1
-}).sort({ "calculated.ratio" : -1});
+  },
+  revenue: {
+    '$gt': 0
+  },
+  'units.residential': {
+    '$gt': 0
+  },
+  'units.commercial': 0
+});

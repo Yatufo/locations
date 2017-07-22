@@ -1,9 +1,11 @@
 const scrapeDetails = require('./ScraperDefinition.js').scrapeDetails;
 const fs = require('fs');
-const writer = fs.createWriteStream("data/estates.json", {
+const estatesFileName = "data/estates-" + new Date().toLocaleDateString() + ".json";
+const writer = fs.createWriteStream(estatesFileName, {
   flags: 'a',
   defaultEncoding: 'utf8'
 });
+
 const RELOAD_AFTER_AMOUNT = 100;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {

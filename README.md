@@ -25,3 +25,18 @@ Create the index:
   db.estates.createIndex({ "location": "2dsphere"})
   db.interests.createIndex({ "location": "2dsphere"})
 ```
+
+
+Ideas:
+Price per ft2
+Average price per ft2 in the area
+Changed price.
+
+
+Export query to csv
+```
+export EXPORTS_QUERY='{ "distances": { "$exists": true }, "revenue": {"$gt": 0}, "units.residential": { "$gt": 0 }, "units.commercial": 0}'
+
+mongoexport --db realestate --collection estates --type=csv --query $EXPORTS_QUERY \
+--fieldFile data/exportFields.txt --out data/exports/prospects.csv
+```
