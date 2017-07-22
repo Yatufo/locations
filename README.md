@@ -15,7 +15,8 @@ Import the scraped data:
 ```
 mongoimport -h localhost:27017 --db realestate --collection estates --mode upsert --upsertFields id  --jsonArray data/estates.json
 mongoimport -h localhost:27017 --db realestate --collection interests  --jsonArray data/interests.json
-```
+``
+
 
 Create the index:
 ```
@@ -35,8 +36,11 @@ Changed price.
 
 Export query to csv
 ```
-export EXPORTS_QUERY='{ "distances": { "$exists": true }, "revenue": {"$gt": 0}, "units.residential": { "$gt": 0 }, "units.commercial": 0}'
+export EXPORTS_QUERY='{ "distances": { "$exists": true }, "price": {"$lt": 700000}, "revenue": {"$gt": 0}, "units.residential": { "$gt": 0 }, "units.commercial": 0}'
 
 mongoexport --db realestate --collection estates --type=csv --query $EXPORTS_QUERY \
 --fieldFile data/exportFields.txt --out data/exports/prospects.csv
 ```
+
+Where to get the coordinates
+http://www.gps-coordinates.net/

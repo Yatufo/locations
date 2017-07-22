@@ -7,6 +7,7 @@ const writer = fs.createWriteStream(estatesFileName, {
 });
 
 const RELOAD_AFTER_AMOUNT = 100;
+const AFTER_NEXT_SLEEP = 100;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
@@ -23,7 +24,7 @@ const selectors = {
 describe('real state information', function() {
 
   it('get the details from the website', () => {
-    browser.get('/');
+    browser.get('/en');
 
     //open the criterias
     waitAndClick(element(by.css(selectors.BUTTON_CRITERIAS)));
@@ -46,7 +47,7 @@ describe('real state information', function() {
     function nextSummary() {
       return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
         .then(() => {
-          return browser.driver.sleep(100); // waits so the ajax call has time to come back.
+          return browser.driver.sleep(AFTER_NEXT_SLEEP); // waits so the ajax call has time to come back.
         });
     }
 
@@ -79,7 +80,7 @@ describe('real state information', function() {
       if (!scrapedIds.includes(result.id)) {
         scrapedIds.push(result.id);
 
-        writer.write(JSON.stringify(result) + ' , ', (e) => {
+        writer.write(JSON.stringify(result, null, 2) + ' , ', (e) => {
           console.log(e ? e : 'saved id:' + result.id + ', counter:' + counter);
         });
 
