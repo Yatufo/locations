@@ -7,7 +7,7 @@ const writer = fs.createWriteStream(estatesFileName, {
 });
 
 const RELOAD_AFTER_AMOUNT = 100;
-const AFTER_NEXT_SLEEP = 100;
+const AFTER_NEXT_SLEEP = 500;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
@@ -24,31 +24,43 @@ const selectors = {
 describe('real state information', function() {
 
   it('get the details from the website', () => {
-    browser.get('/en');
+    browser.get('/en')
+      .then(() => {
+        //open the criterias
+        waitAndClick(element(by.css(selectors.BUTTON_CRITERIAS)));
 
-    //open the criterias
-    waitAndClick(element(by.css(selectors.BUTTON_CRITERIAS)));
+        // select the criterias
+        waitAndClick(element(by.css(selectors.OPTION_PLEX)));
 
-    // select the criterias
-    waitAndClick(element(by.css(selectors.OPTION_PLEX)));
+        // search
+        waitAndClick(element(by.css(selectors.BUTTON_SEARCH)));
 
-    // search
-    waitAndClick(element(by.css(selectors.BUTTON_SEARCH)));
+        // select order by more recent first
+        waitAndClick(element(by.css(selectors.SELECTOR_ORDER)));
 
-    // select order by more recent first
-    waitAndClick(element(by.css(selectors.SELECTOR_ORDER)));
+        // order by the most recent first
+        waitAndClick(element(by.css(selectors.SELECT_RECENT)));
 
-    // order by the most recent first
-    waitAndClick(element(by.css(selectors.SELECT_RECENT)));
+        //Summary Tab button
+        return waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
+      })
+      .then(() => {
+        return scrapeNext(0, browser.params.startId);
+      })
 
-    //Summary Tab button
-    waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
-
-    function nextSummary() {
-      return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
-        .then(() => {
-          return browser.driver.sleep(AFTER_NEXT_SLEEP); // waits so the ajax call has time to come back.
-        });
+    function scrapeNext(counter, id) {
+      if (!id) {
+        return loadArtoo().then(scrape);
+      } else {
+        return reload(counter, id)
+          .then(() => {
+            return waitAndClick(element.all(by.css(selectors.BUTTON_NEXT_SUMMARY)).first())
+              .then(() => {
+                return browser.driver.sleep(AFTER_NEXT_SLEEP); // waits so the ajax call has time to come back.
+              });
+          })
+          .then(scrape);
+      }
     }
 
 
@@ -85,21 +97,19 @@ describe('real state information', function() {
         });
 
         counter++;
-        reload(counter, result.id).then(nextSummary).then(scrape);
+        scrapeNext(counter, result.id);
       } else {
-        console.log("Ignoring already processed id:" + result.id + 'and trying again');
+        console.log("Ignoring already processed id: " + result.id + ' and trying again');
         scrape();
       }
 
     }
 
+    //5427
     function scrape() {
       return browser.executeScript("return scrapeDetails();").then(afterScraping);
     }
 
-    reload(counter, browser.params.startId)
-    .then(loadArtoo())
-    .then(scrape());
   });
 
 });
