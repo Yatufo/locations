@@ -4,3 +4,5 @@ revenue
 location.coordinates.0
 location.coordinates.1
 calculated.ratio
+calculated.url
+residentialUnits

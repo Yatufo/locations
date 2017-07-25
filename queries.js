@@ -35,7 +35,7 @@ db.tmp.find({}).forEach(function(tmp) {
 //remove fields
 db.estates.update({}, {
   $unset: {
-    hisory: ""
+    distances: ""
   }
 }, {
   multi: true });
@@ -43,6 +43,9 @@ db.estates.update({}, {
 /**
   Updates the distances from all points of interest for all the estates.
 **/
+
+// load script to be able to use them in mongo.
+db.loadServerScripts();
 db.interests.aggregate()
   .forEach(function(interest) {
     findEstatesNearBy(interest.location, 1000).results
@@ -97,10 +100,6 @@ function findEstatesNearBy(location, maxDistance) {
     maxDistance: maxDistance
   });
 }
-
-
-// load script to be able to use them in mongo.
-db.loadServerScripts();
 
 
 // estates close to any interest

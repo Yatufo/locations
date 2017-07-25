@@ -36,10 +36,10 @@ Changed price.
 
 Export query to csv
 ```
-export EXPORTS_QUERY='{ "distances": { "$exists": true }, "price": {"$lt": 700000}, "revenue": {"$gt": 0}, "units.residential": { "$gt": 0 }, "units.commercial": 0}'
+export EXPORTS_QUERY='{ "distances": { "$exists": true }, "price": {"$lt": 700000}, "revenue": {"$gt": 0}, "units.residential": { "$gt": 2 }, "units.commercial": 0, history : {$exists : true}}'
 
 mongoexport --db realestate --collection estates --type=csv --query $EXPORTS_QUERY \
---fieldFile data/exportFields.txt --out data/exports/prospects.csv
+--fieldFile data/exportFields.txt --out data/exports/new-prospects.csv
 ```
 
 Where to get the coordinates
