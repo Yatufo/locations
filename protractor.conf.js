@@ -9,9 +9,9 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
-      'args': ['--start-maximized', '--no-sandbox', '--test-type=browser'],
-      'prefs' : {
-        'profile.managed_default_content_settings.images' : 2
+      'args': ['--start-maximized', '--no-sandbox', '--test-type=browser'], //'--headless', '--disable-gpu', '--remote-debugging-port=9222',
+      'prefs': {
+        'profile.managed_default_content_settings.images': 2
       }
     }
   },

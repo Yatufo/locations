@@ -9,39 +9,36 @@ db.estates.aggregate({
   }
 })
 
-//Transform all the data the location field
-db.estates.aggregate([{
-  $addFields: {
-    location: {
-      type: "Point",
-      coordinates: ["$coord.lon", "$coord.lat"]
-    }
-  }
-}]).forEach(function(estate) {
-  estate.ratio = Math.round((estate.revenue / estate.price) * 100);
-  db.estates.save(estate);
-})
+// Setting the calculated data
+db.estates.find({}).forEach(function(estate) {
 
-// Transforming the old way
-db.estates.find({}).map(function(estate) {
-  estate.calculated = {
+  var calculated = {
     url: 'http://www.centris.ca/en/duplex~a-vendre~le-plateau-mont-royal-montreal/' + estate.id,
     ratio: Math.round((estate.revenue / estate.price) * 100)
   };
-  db.estates.save(estate);
-  return estate;
-})
+  var timestamp = new Date(estate.timestamp);
+  db.estates.update({ _id: estate._id}, { $set: { calculated: calculated, timestamp : timestamp}});
+});
 
+
+// Updating the history from the previous data
+db.tmp.find({}).forEach(function(tmp) {
+  var history = (tmp.history || [])
+
+  db.estates.update({
+    id: tmp.id
+  }, {
+    $push : { history: { $each : history } }
+  });
+})
 
 //remove fields
 db.estates.update({}, {
   $unset: {
-    coord: "",
-    distances: "",
+    hisory: ""
   }
 }, {
-  multi: true
-})
+  multi: true });
 
 /**
   Updates the distances from all points of interest for all the estates.

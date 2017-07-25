@@ -105,7 +105,6 @@ describe('real state information', function() {
 
     }
 
-    //5427
     function scrape() {
       return browser.executeScript("return scrapeDetails();").then(afterScraping);
     }

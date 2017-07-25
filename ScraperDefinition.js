@@ -55,7 +55,7 @@ const scrapeDetails = () => {
   };
 
   function getNumberOnly(formattedString) {
-    const floatPattern = /\d+\,\d+/g;
+    const floatPattern = /\d+\,?\d+/g;
     const numbersFound = formattedString.match(floatPattern) || [];
     return (numbersFound.length > 0) ? parseFloat(numbersFound[0].replace(',', '')) : null;
   };
@@ -65,6 +65,7 @@ const scrapeDetails = () => {
   details.area = getNumberOnly(details.area);
   details.revenue = getNumberOnly(details.revenue);
   details.year = getNumberOnly(details.year);
+  details.price = getNumberOnly(details.price);
 
 
   const integerPattern = /\d+/g;
