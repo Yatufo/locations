@@ -7,7 +7,6 @@ const writer = fs.createWriteStream(estatesFileName, {
 });
 
 const RELOAD_AFTER_AMOUNT = 100;
-const AFTER_NEXT_SLEEP = 500;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
 const BUTTON_NEXT_SUMMARY = pages.pageDetails.selectors.BUTTON_NEXT_SUMMARY;
 
@@ -24,9 +23,7 @@ describe('real state information', function() {
       if (!id) {
         return pages.pageDetails.loadScraper().then(scrape);
       } else {
-        return reload(counter, id)
-          .then(pages.pageDetails.next)
-          .then(scrape);
+        return reload(counter, id).then(pages.pageDetails.next).then(scrape);
       }
     }
 
