@@ -2,7 +2,7 @@
 
 const AFTER_NEXT_SLEEP = 500;
 
-const detailsScraper = require('./scrapers/DetailsScraper.js');
+const detailsScraper = require('../scrapers/DetailsScraper.js');
 
 const loadScraper = function() {
   return browser.executeScript(() => {

@@ -1,4 +1,4 @@
-const pages = require('./Pages.js');
+const pages = require('./pages/Pages.js');
 const fs = require('fs');
 const estatesFileName = "data/estates-" + new Date().toLocaleDateString() + ".json";
 const writer = fs.createWriteStream(estatesFileName, {
