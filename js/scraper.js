@@ -8,22 +8,21 @@ const writer = fs.createWriteStream(estatesFileName, {
 
 const RELOAD_AFTER_AMOUNT = 100;
 const SUMARY_URL_BASE = '/en/duplex~a-vendre~le-plateau-mont-royal-montreal/';
-const BUTTON_NEXT_SUMMARY = pages.pageDetails.selectors.BUTTON_NEXT_SUMMARY;
 
 describe('real state information', function() {
 
   it('get the details from the website', () => {
 
-    pages.pageSearch.searchForPlexes()
+    pages.search.searchForPlexes()
       .then(() => {
         return scrapeNext(0, browser.params.startId);
       })
 
     function scrapeNext(counter, id) {
       if (!id) {
-        return pages.pageDetails.loadScraper().then(scrape);
+        return pages.details.init().then(scrape);
       } else {
-        return reload(counter, id).then(pages.pageDetails.next).then(scrape);
+        return reload(counter, id).then(pages.details.next).then(scrape);
       }
     }
 
@@ -31,7 +30,7 @@ describe('real state information', function() {
       const shouldReload = counter % RELOAD_AFTER_AMOUNT == 0;
       if (shouldReload && id) {
         console.log("reloading after scraping (" + counter + ") times");
-        return browser.get(SUMARY_URL_BASE + id).then(pages.pageDetails.loadScraper);
+        return browser.get(SUMARY_URL_BASE + id).then(pages.details.init);
       }
 
       return Promise.resolve();
@@ -59,7 +58,7 @@ describe('real state information', function() {
     }
 
     function scrape() {
-      return pages.pageDetails.scrape().then(afterScraping);
+      return pages.scrape().then(afterScraping);
     }
 
   });

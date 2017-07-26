@@ -1,4 +1,10 @@
+'use strict';
+
 module.exports  = {
-  pageDetails : require('./PageDetails.js'),
-  pageSearch : require('./PageSearch.js')
+  details : require('./PageDetails.js'),
+  search : require('./PageSearch.js'),
+  grid : require('./PageGrid.js'),
+  scrape : () => {
+    return browser.executeScript("return scrape();");
+  }
 }

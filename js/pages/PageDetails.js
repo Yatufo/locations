@@ -1,18 +1,9 @@
 'use strict';
 
+const utils = require('./Utils.js')
 const AFTER_NEXT_SLEEP = 500;
 
-const detailsScraper = require('../scrapers/DetailsScraper.js');
-
-const loadScraper = function() {
-  return browser.executeScript(() => {
-      $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
-      window.scrapeDetails = eval(arguments[0]);
-    }, detailsScraper.toString())
-    .then(() => {
-      return browser.driver.sleep(3000);
-    });
-}
+const scraper = require('../scrapers/DetailsScraper.js');
 
 const selectors = {
   BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next',
@@ -26,13 +17,9 @@ const next = function() {
     });
 }
 
-const scrape = function() {
-  return browser.executeScript("return scrapeDetails();");
-}
-
 module.exports = {
-  loadScraper: loadScraper,
-  selectors: selectors,
-  scrape: scrape,
-  next: next
+  next: next,
+  init : () => {
+    return utils.loadScraper(scraper);
+  }
 }
