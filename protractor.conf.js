@@ -37,7 +37,7 @@ exports.config = {
 
     function toElement(selector) {
       if (typeof selector === 'string' || selector instanceof String){
-        return element(by.css(selector));
+        return element.all(by.css(selector)).first();
       }
       return selector;
     }
