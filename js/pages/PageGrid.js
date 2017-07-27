@@ -27,13 +27,14 @@ let currentId = "";
 
 function afterScraping([results, status]) {
   const [current, total] = status;
-  const notFinished = current < 10;//total;
+  const notFinished = current < total;
   const [first] = results;
+  const infoIsLoaded = currentId !== first.id;
 
-  console.log("status: ", current, ' / ', total);
-  if (currentId !== first.id) {
+  if (infoIsLoaded) {
     currentId = first.id;
     results.forEach((item) => prospects.push(item));
+    console.log("status: ", current, ' / ', total);
     return (notFinished ? gridPage.next().then(scrape) : Promise.resolve(prospects));
   } else {
     console.log("Ignoring already processed id: " + first.id + ' and trying again');
