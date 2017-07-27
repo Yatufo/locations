@@ -31,9 +31,6 @@ const searchForPlexes = () => {
 
       // order by the most recent first
       return waitAndClick(selectors.SELECT_RECENT);
-
-      // //Summary Tab button
-      // return waitAndClick(selectors.BUTTON_SUMMARY_TAB);
     });
 };
 

@@ -8,10 +8,8 @@ const selectors = {
   LABEL_PAGE_STATUS: '#divWrapperPager > ul > li.pager-current'
 };
 
-module.exports = {
-  init: () => {
-    return utils.waitPageLoaded().then(() => utils.loadScraper(scraper));
-  },
+const gridPage = {
+  init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
   next: () => {
     return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
       .then(utils.waitPageLoaded)
@@ -20,5 +18,31 @@ module.exports = {
   getStatus: () => {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((text) => text.split('/').map((s) => parseInt(s)));
+  },
+  scrapeAll: scrape
+}
+
+const prospects = [];
+let currentId = "";
+
+function afterScraping([results, status]) {
+  const [current, total] = status;
+  const notFinished = current < 10;//total;
+  const [first] = results;
+
+  console.log("status: ", current, ' / ', total);
+  if (currentId !== first.id) {
+    currentId = first.id;
+    results.forEach((item) => prospects.push(item));
+    return (notFinished ? gridPage.next().then(scrape) : Promise.resolve(prospects));
+  } else {
+    console.log("Ignoring already processed id: " + first.id + ' and trying again');
+    return scrape();
   }
 }
+
+function scrape() {
+  return Promise.all([utils.scrape(), gridPage.getStatus()]).then(afterScraping);
+}
+
+module.exports = gridPage;
