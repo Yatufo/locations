@@ -13,10 +13,16 @@ describe('real state information', function() {
 
   it('get the details from the website', () => {
 
+
     pages.search.searchForPlexes()
-      .then(() => {
-        return scrapeNext(0, browser.params.startId);
-      })
+    .then(pages.grid.init)
+    .then(pages.scrape)
+    .then((results) => {
+      console.log(results);
+    });
+      // .then(() => {
+      //   return scrapeNext(0, browser.params.startId);
+      // })
 
     function scrapeNext(counter, id) {
       if (!id) {

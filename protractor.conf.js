@@ -33,9 +33,25 @@ exports.config = {
 
     browser.waitForAngularEnabled(false);
     global.EC = protractor.ExpectedConditions;
-    global.waitAndClick = (element, timeout) => {
-      browser.wait(EC.elementToBeClickable(element), timeout || 5000);
-      return element.click();
+
+
+    function toElement(selector) {
+      if (typeof selector === 'string' || selector instanceof String){
+        return element(by.css(selector));
+      }
+      return selector;
+    }
+
+    function waitFor(selector, timeout) {
+      const e = toElement(selector)
+      return browser.wait(EC.elementToBeClickable(e), timeout || 5000);
+    }
+
+    global.waitFor = waitFor;
+
+    global.waitAndClick = (selector, timeout) => {
+      const e = toElement(selector);
+      return waitFor(e, timeout).then(e.click);
     }
   },
 

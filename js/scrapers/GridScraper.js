@@ -3,18 +3,24 @@
 module.exports = () => {
 
   const scrapeGridSchema = {
-    id: () => {
-      return $('div.description a').text();
+    id: {
+      sel: 'div.description > a',
+      attr: 'data-mlsnumber'
     },
-    updated: () => {
-      $('div.thumbnail > a > div.nouvelle-propriete')
+    url :{
+       sel : 'div.thumbnail > a',
+       attr : 'href'
+    },
+    updated: {
+      sel : 'div.banner.new-property',
+      method : function($) {
+        return $(this).length == 1;
+      }
     },
     timestamp: () => {
       return new Date().getTime();
     }
   };
 
-  const details = artoo.scrape('#divMainResult', scrapeGridSchema);
-
-  return details
+  return artoo.scrape('div.thumbnailItem', scrapeGridSchema);
 };

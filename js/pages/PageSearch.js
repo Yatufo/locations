@@ -18,22 +18,22 @@ const searchForPlexes = () => {
    return browser.get('/en')
     .then(() => {
       //open the criterias
-      waitAndClick(element(by.css(selectors.BUTTON_CRITERIAS)));
+      waitAndClick(selectors.BUTTON_CRITERIAS));
 
       // select the criterias
-      waitAndClick(element(by.css(selectors.OPTION_PLEX)));
+      waitAndClick(selectors.OPTION_PLEX));
 
       // search
-      waitAndClick(element(by.css(selectors.BUTTON_SEARCH)));
+      waitAndClick(selectors.BUTTON_SEARCH));
 
       // select order by more recent first
-      waitAndClick(element(by.css(selectors.SELECTOR_ORDER)));
+      waitAndClick(selectors.SELECTOR_ORDER));
 
       // order by the most recent first
-      waitAndClick(element(by.css(selectors.SELECT_RECENT)));
+      return waitAndClick(selectors.SELECT_RECENT));
 
-      //Summary Tab button
-      return waitAndClick(element(by.css(selectors.BUTTON_SUMMARY_TAB)));
+      // //Summary Tab button
+      // return waitAndClick(selectors.BUTTON_SUMMARY_TAB));
     });
 };
 
