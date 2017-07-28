@@ -40,9 +40,6 @@ module.exports = () => {
         }
       }
       return {};
-    },
-    timestamp: () => {
-      return new Date().getTime();
     }
   };
 

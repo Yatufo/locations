@@ -16,9 +16,6 @@ module.exports = () => {
       method : function($) {
         return $(this).length == 1;
       }
-    },
-    timestamp: () => {
-      return new Date().getTime();
     }
   };
 
