@@ -23,6 +23,7 @@ mongoimport -h localhost:27017 --db realestate --collection updates --mode upser
   db.loadServerScripts();
   updateAllEstatesDistances(600);
   updateDailyVisibility();
+  updateCalculatedRatio();
 ```
 
 * Export query to csv:

@@ -13,7 +13,7 @@ function updateDailyVisibility() {
   }]).map(function(o){return o.timestamp})[0];
 
 
-
+  // only the estates with updated will be fully updated and visible.
   db.updates.find({ updated : true, timestamp : { '$gte': LAST_BATCH_START }})
   .forEach(function(estate){
     estate.calculated = { visible : true};
@@ -21,7 +21,7 @@ function updateDailyVisibility() {
     db.estates.update({ id : estate.id}, estate, {upsert : true});
   });
 
-
+  //the rest will be just have the timestamp updated and also its visibility.
   db.updates.find({ updated : false, timestamp : { '$gte': LAST_BATCH_START }})
   .forEach(function(estate){
     var timestamp = new Date(estate.timestamp);
