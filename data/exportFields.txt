@@ -6,3 +6,4 @@ location.coordinates.1
 calculated.ratio
 url
 residentialUnits
+score

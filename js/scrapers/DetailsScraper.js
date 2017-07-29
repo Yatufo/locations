@@ -58,7 +58,7 @@ module.exports = () => {
   };
 
   const details = artoo.scrapeOne('#overview div.description', scrapeDetailsSchema);
-  details.score = parseInt((details.score || '0').trim());
+  details.score = getNumberOnly(details.score);
   details.area = getNumberOnly(details.area);
   details.revenue = getNumberOnly(details.revenue);
   details.year = getNumberOnly(details.year);
