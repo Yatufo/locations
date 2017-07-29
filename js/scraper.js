@@ -11,9 +11,9 @@ describe('real state information', function() {
         .then(pages.grid.scrapeAll)
         .then((results) => processor.processProspects(results, startTime, isLastGroup));
     }
-    
-    processor.start()
-    .then(() => scrapeSearch(pages.search.searchForCommercialPlexes(), false))
+
+    processor.start();
+    scrapeSearch(pages.search.searchForCommercialPlexes(), false)
     .then(() => scrapeSearch(pages.search.searchForResidentialPlexes(), true));
 
   });
