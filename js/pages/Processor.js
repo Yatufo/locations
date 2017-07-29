@@ -7,27 +7,33 @@ const writer = fs.createWriteStream(estatesFileName, {
   defaultEncoding: 'utf8'
 });
 
-const startTime = new Date().getTime();
-writer.write('[');
-
-function saveProspect(prospect, isLast) {
-  prospect.timestamp = startTime;
-
-  const jsonString = JSON.stringify(prospect, null, 2) + (isLast ? '] ' :', ') ;
+function saveProspect(prospect, isLastElement) {
+  const jsonString = JSON.stringify(prospect, null, 2) + (isLastElement ? '] ' : ', ');
   writer.write(jsonString, (e) => console.log(e ? e : 'saved id:' + prospect.id));
 }
 
-function processProspects(prospects) {
+function resolveDetails(prospect) {
+  return (prospect.updated ?
+    pages.details.scrape(prospect.url)
+      .then((scraped) => Object.assign(prospect, scraped)) :
+    Promise.resolve(prospect));
+}
+
+function processProspects(prospects, startTime, isLastGroup) {
   if (prospects.length > 0) {
     const [head, ...tail] = prospects;
-    const isLast = tail.length === 0;
+    const isLastElement = isLastGroup && tail.length === 0;
+    head.timestamp = startTime;
 
-    (head.updated ? pages.details.scrape(head.url) : Promise.resolve({}))
-    .then((scraped) => saveProspect(Object.assign(head, scraped), isLast))
-      .then(() => processProspects(tail))
+    resolveDetails(head)
+      .then((prospect) => saveProspect(prospect, isLastElement))
+      .then(() => processProspects(tail, startTime, isLastGroup))
   }
 }
 
 module.exports = {
+  start: function() {
+    return writer.write('[');
+  },
   processProspects: processProspects
 }

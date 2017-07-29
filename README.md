@@ -21,18 +21,16 @@ mongoimport -h localhost:27017 --db realestate --collection updates --mode upser
 * Calculate important data in Mongo:
 ```
   db.loadServerScripts();
-  updateAllEstatesDistances(600);
   updateDailyVisibility();
+  updateAllEstatesDistances(600);
   updateCalculatedRatio();
 ```
 
 * Export query to csv:
 
 ```
-export EXPORTS_QUERY='{ "calculated.distances": { "$exists": true }, "price": {"$lt": 700000}, "revenue": {"$gt": 0}, "units.residential": { "$gt": 2 }, "units.commercial": 0, history : {$exists : true}}'
-```
+export EXPORTS_QUERY='{ "calculated.distances": { "$exists": true }, "price": {"$lt": 700000}, "revenue": {"$gt": 0}, "units.residential": { "$gt": 2 }, "units.commercial": 0, {visible  : true}, {updated : true}}'
 
-```
 mongoexport --db realestate --collection estates --type=csv --query $EXPORTS_QUERY --fieldFile data/exportFields.txt --out data/exports/new-prospects.csv
 ```
 

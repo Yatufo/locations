@@ -1,9 +1,8 @@
-
-
-
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
   BUTTON_CRITERIAS: '#btn-advanced-criterias',
+  BUTTON_COMMERCIAL: '#commercial',
+  OPTION_MULTIFAMILY: '#item-property > button:nth-child(10)',
   OPTION_PLEX: '#item-property > button:nth-child(5)',
   BUTTON_SEARCH: '#search-form-bottom-actions button.btn.btn-search',
   SELECTOR_ORDER: '#selectSortById',
@@ -13,27 +12,27 @@ const selectors = {
   LABEL_PAGE_STATUS: '#divWrapperPager > ul > li.pager-current'
 };
 
-
-const searchForPlexes = () => {
-   return browser.get('/en')
-    .then(() => {
-      //open the criterias
-      waitAndClick(selectors.BUTTON_CRITERIAS);
-
-      // select the criterias
-      waitAndClick(selectors.OPTION_PLEX);
-
-      // search
-      waitAndClick(selectors.BUTTON_SEARCH);
-
-      // select order by more recent first
-      waitAndClick(selectors.SELECTOR_ORDER);
-
-      // order by the most recent first
-      return waitAndClick(selectors.SELECT_RECENT);
-    });
+function searchForResidentialPlexes (){
+  return browser.get('/en')
+    .then(() => waitAndClick(selectors.BUTTON_CRITERIAS)) //open the criterias
+    .then(() => waitAndClick(selectors.OPTION_PLEX)) // select only plexes
+    .then(() => waitAndClick(selectors.BUTTON_SEARCH)) // search
+    .then(() => waitAndClick(selectors.SELECTOR_ORDER)) // select order by more recent first
+    .then(() => waitAndClick(selectors.SELECT_RECENT)) // order by the most recent first
 };
 
+function searchForCommercialPlexes(){
+  return browser.get('/en')
+    .then(() => waitAndClick(selectors.BUTTON_CRITERIAS)) //open the criterias
+    .then(() => waitAndClick(selectors.BUTTON_COMMERCIAL)) // Commercial.
+    .then(() => waitAndClick(selectors.OPTION_MULTIFAMILY)) //select multi family.
+    .then(() => waitAndClick(selectors.BUTTON_SEARCH))
+    .then(() => waitAndClick(selectors.SELECTOR_ORDER)) // select order by more recent first
+    .then(() => waitAndClick(selectors.SELECT_RECENT)) // order by the most recent first
+};
+
+
 module.exports = {
-  searchForPlexes: searchForPlexes
+  searchForResidentialPlexes: searchForResidentialPlexes,
+  searchForCommercialPlexes: searchForCommercialPlexes
 }
