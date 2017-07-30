@@ -5,17 +5,19 @@ describe('real state information', function() {
 
   it('get the details from the website', () => {
     const startTime = new Date().getTime();
+    //
+    // function scrapeSearch(search, isLastGroup) {
+    //   return search().then(pages.grid.init)
+    //     .then(pages.grid.scrapeAll)
+    //     .then((results) => processor.processProspects(results, startTime, isLastGroup));
+    // }
+    //
+    // scrapeSearch(pages.search.searchForCommercialPlexes, false)
+    // .then(() => scrapeSearch(pages.search.searchForResidentialPlexes, true));
 
-    function scrapeSearch(search, isLastGroup) {
-      return search.then(pages.grid.init)
-        .then(pages.grid.scrapeAll)
-        .then((results) => processor.processProspects(results, startTime, isLastGroup));
-    }
-
-    processor.start();
-    scrapeSearch(pages.search.searchForCommercialPlexes(), false)
-    .then(() => scrapeSearch(pages.search.searchForResidentialPlexes(), true));
-
+    const results = require('../grid.json');
+    results.forEach((item) => {item.updated = true});
+    processor.processProspects(results, startTime, false);
   });
 
 });

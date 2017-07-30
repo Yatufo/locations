@@ -1,4 +1,4 @@
-
+'use strict';
 
 const utils = require('./Utils.js')
 const scraper = require('../scrapers/GridScraper.js');
@@ -13,37 +13,17 @@ const gridPage = {
   next: () => {
     return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
       .then(utils.waitPageLoaded)
-      .then(this.init); // waits so the ajax call has time to come back.
+      .then(this.init)
   },
   getStatus: () => {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
-      .then((text) => text.split('/').map((s) => parseInt(s)));
+    .then((text) => text.replace(',' , '').split('/').map((s) => parseInt(s)));
   },
-  scrapeAll: scrape
+  scrapeAll: scrapeAll
 }
 
-const prospects = [];
-let currentId = "";
-
-function afterScraping([results, status]) {
-  const [current, total] = status;
-  const notFinished = current < total;
-  const [first] = results;
-  const infoIsLoaded = currentId !== first.id;
-
-  if (infoIsLoaded) {
-    currentId = first.id;
-    results.forEach((item) => prospects.push(item));
-    console.log("status: ", current, ' / ', total);
-    return (notFinished ? gridPage.next().then(scrape) : Promise.resolve(prospects));
-  } else {
-    console.log("Ignoring already processed id: " + first.id + ' and trying again');
-    return scrape();
-  }
-}
-
-function scrape() {
-  return Promise.all([utils.scrape(), gridPage.getStatus()]).then(afterScraping);
+function scrapeAll(){
+  return gridPage.init().then(() => utils.scrapeAll(gridPage)); //TODO: Use this.
 }
 
 module.exports = gridPage;

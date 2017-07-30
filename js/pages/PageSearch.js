@@ -7,7 +7,6 @@ const selectors = {
   BUTTON_SEARCH: '#search-form-bottom-actions button.btn.btn-search',
   SELECTOR_ORDER: '#selectSortById',
   SELECT_RECENT: '#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
-  BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
   BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next',
   LABEL_PAGE_STATUS: '#divWrapperPager > ul > li.pager-current'
 };
@@ -23,7 +22,7 @@ function searchForResidentialPlexes (){
 
 function searchForCommercialPlexes(){
   return browser.get('/en')
-    .then(() => waitAndClick(selectors.BUTTON_CRITERIAS)) //open the criterias
+    .then(() => waitAndClick(selectors.BUTTON_CRITERIAS)) // Open the criterias
     .then(() => waitAndClick(selectors.BUTTON_COMMERCIAL)) // Commercial.
     .then(() => waitAndClick(selectors.OPTION_MULTIFAMILY)) //select multi family.
     .then(() => waitAndClick(selectors.BUTTON_SEARCH))

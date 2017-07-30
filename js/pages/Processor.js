@@ -25,6 +25,7 @@ function processProspects(prospects, startTime, isLastGroup) {
     const isLastElement = isLastGroup && tail.length === 0;
     head.timestamp = startTime;
 
+    head.updated = true; //TODO: remove.
     resolveDetails(head)
       .then((prospect) => saveProspect(prospect, isLastElement))
       .then(() => processProspects(tail, startTime, isLastGroup))
