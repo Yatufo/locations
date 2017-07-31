@@ -15,21 +15,21 @@ function updateDailyVisibility() {
 
   // only the estates with updated will be fully updated and visible.
   db.updates.find({ updated : true, timestamp : { '$gte': LAST_BATCH_START }})
-  .forEach(function(estate){
-    delete estate._id
-    estate.calculated = { visible : true};
-    estate.timestamp = new Date(estate.timestamp);
-    db.estates.update({ id : estate.id}, {$set : estate}, {upsert : true});
+  .forEach(function(updatedEstate){
+    delete updatedEstate._id
+    updatedEstate.calculated = { visible : true};
+    updatedEstate.timestamp = new Date(updatedEstate.timestamp);
+    db.estates.update({ id : updatedEstate.id}, {$set : estate}, {upsert : true});
   });
 
   //the rest will be just have the timestamp updated and also its visibility.
   db.updates.find({ updated : false, timestamp : { '$gte': LAST_BATCH_START }})
-  .forEach(function(estate){
-    var timestamp = new Date(estate.timestamp);
+  .forEach(function(updatedEstate){
+    var timestamp = new Date(updatedEstate.timestamp);
     db.estates.update({
-      id: estate.id
+      id: updatedEstate.id
     }, {
-      $set: {'calculated.visible': true,'timestamp': timestamp}
+      $set: {url : updatedEstate.url, 'calculated.visible': true,'timestamp': timestamp}
     });
   });
 }
