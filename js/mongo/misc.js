@@ -23,3 +23,6 @@ db.estates.find({
   },
   'units.commercial': 0
 });
+
+//uset field
+db.estates.update({}, { $unset: { 'history': ""}}, {multi: true});

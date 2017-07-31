@@ -6,6 +6,7 @@ const writer = fs.createWriteStream(estatesFileName, {
   flags: 'a',
   defaultEncoding: 'utf8'
 });
+writer.write('[');
 
 function saveProspect(prospect, isLastElement) {
   const jsonString = JSON.stringify(prospect, null, 2) + (isLastElement ? '] ' : ', ');
@@ -19,7 +20,7 @@ function resolveDetails(prospect) {
     Promise.resolve(prospect));
 }
 
-function processProspects(prospects, startTime, isLastGroup) {
+function processProspects(prospects, startTime, isLastGroup, isStart) {
   if (prospects.length > 0) {
     const [head, ...tail] = prospects;
     const isLastElement = isLastGroup && tail.length === 0;
@@ -32,8 +33,5 @@ function processProspects(prospects, startTime, isLastGroup) {
 }
 
 module.exports = {
-  start: function() {
-    return writer.write('[');
-  },
   processProspects: processProspects
 }
