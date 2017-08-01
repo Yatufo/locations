@@ -1,6 +1,6 @@
 **/**/*.log
 node_modules/**
 *.DS_Store
-data/estates*.json
+data/updates*.json
 data/locations*.json
 data/**/*.csv
