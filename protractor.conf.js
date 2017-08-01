@@ -4,7 +4,6 @@ exports.config = {
   params: {
     startId: undefined
   },
-  seleniumAddress: 'http://localhost:4444/wd/hub',
   specs: ['js/scraper.js'],
   capabilities: {
     'browserName': 'chrome',

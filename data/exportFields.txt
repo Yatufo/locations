@@ -7,3 +7,4 @@ calculated.ratio
 url
 residentialUnits
 score
+timestamp
