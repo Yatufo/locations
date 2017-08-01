@@ -15,7 +15,7 @@ From the root folder:
 
 * Import the scraped data:
 ```
-mongoimport -h localhost:27017 --db realestate --collection updates --mode upsert --upsertFields id  --jsonArray data/updates.json
+  mongoimport -h localhost:27017 --db realestate --collection updates --mode upsert --upsertFields id,timestamp  --jsonArray data/updates.json
 ```
 
 * Calculate important data in Mongo:
