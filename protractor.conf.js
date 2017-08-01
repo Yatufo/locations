@@ -30,7 +30,8 @@ exports.config = {
       baseDirectory: '/tmp/screenshots'
     }));
 
-    browser.waitForAngularEnabled(false);
+
+    browser.ignoreSynchronization=true;  // or false
     global.EC = protractor.ExpectedConditions;
 
 
