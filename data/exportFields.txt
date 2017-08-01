@@ -8,3 +8,4 @@ url
 residentialUnits
 score
 timestamp
+calculated.recent

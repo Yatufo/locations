@@ -1,7 +1,7 @@
 
 function updateDailyVisibility() {
   // Sat all invisible.
-  db.estates.update({}, { $set: { 'calculated.visible': false}}, {multi: true});
+  db.estates.update({}, { $set: { 'calculated.visible': false, 'calculated.recent' : false}}, {multi: true});
 
   var LAST_BATCH_START = db.updates.aggregate([{
     $group: {
@@ -17,11 +17,13 @@ function updateDailyVisibility() {
   db.updates.find({ updated : true, timestamp : LAST_BATCH_START })
   .forEach(function(updatedEstate){
     var timestamp = new Date(updatedEstate.timestamp);
+    var calculated = (updatedEstate.calculated || {})
+    updatedEstate.calculated = Object.assign(calculated, { recent : true, visible : true});
+
     delete updatedEstate._id
     delete updatedEstate.timestamp
     delete updatedEstate.updated
 
-    updatedEstate.calculated = { visible : true};
     db.estates.update({ id : updatedEstate.id}, {$set : updatedEstate, $setOnInsert : {timestamp : timestamp}}, {upsert : true});
   });
 
