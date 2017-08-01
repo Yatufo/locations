@@ -12,7 +12,7 @@ module.exports = () => {
        attr : 'href'
     },
     updated: {
-      sel : 'div.banner.new-property',
+      sel : 'div.banner > .new-property, .new-price',
       method : function($) {
         return $(this).length == 1;
       }
