@@ -25,15 +25,10 @@ function updateDailyVisibility() {
     db.estates.update({ id : updatedEstate.id}, {$set : updatedEstate, $setOnInsert : {timestamp : timestamp}}, {upsert : true});
   });
 
-  //the rest will be just have the timestamp updated and also its visibility.
+  //the rest (found but not updated) will be just visible.
   db.updates.find({ updated : false, timestamp : LAST_BATCH_START})
   .forEach(function(updatedEstate){
-    var timestamp = new Date(updatedEstate.timestamp);
-    db.estates.update({
-      id: updatedEstate.id
-    }, {
-      $set: {url : updatedEstate.url, updated : false, 'calculated.visible': true,'timestamp': timestamp}
-    });
+    db.estates.update({ id: updatedEstate.id}, { $set: {'calculated.visible': true}});
   });
 }
 
