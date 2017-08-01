@@ -8,7 +8,7 @@ module.exports = {
         window.scrape = eval(arguments[0]);
       }, scrapeDefinition.toString())
       .then(() => {
-        return browser.driver.sleep(600);
+        return browser.driver.sleep(1000);
       });
   },
   waitPageLoaded: () => {

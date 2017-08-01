@@ -1,6 +1,7 @@
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
   BUTTON_CRITERIAS: '#btn-advanced-criterias',
+  BUTTON_RESIDENTIAL: '#residentiel',
   BUTTON_COMMERCIAL: '#commercial',
   OPTION_MULTIFAMILY: '#item-property > button:nth-child(10)',
   OPTION_PLEX: '#item-property > button:nth-child(5)',
@@ -15,6 +16,7 @@ const selectors = {
 function searchForResidentialPlexes (){
   return browser.get('/en')
     .then(() => waitAndClick(selectors.BUTTON_CRITERIAS)) //open the criterias
+    .then(() => waitAndClick(selectors.BUTTON_RESIDENTIAL)) // Residential.
     .then(() => waitAndClick(selectors.OPTION_PLEX)) // select only plexes
     .then(() => waitAndClick(selectors.BUTTON_SEARCH)) // search
     .then(() => waitAndClick(selectors.SELECTOR_ORDER)) // select order by more recent first
