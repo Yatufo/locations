@@ -17,6 +17,12 @@ echo 4. Exporting query to csv:
 mongoexport --db realestate --collection estates --type=csv \
 --query '{ "calculated.distances": { $exists: true }, price: {$lt: 700000}, revenue: {$gt: 0}, "units.residential": { "$gt": 2 }, "units.commercial": 0, "calculated.visible"  : true}' --fieldFile data/exportFields.txt --out data/exports/prospects.csv
 
+echo 5. Rename the csv file titles:
+export CURRENT_LABELS=location.coordinates.0,location.coordinates.1,id,price,revenue,calculated.ratio,url,residentialUnits,score,timestamp,calculated.recent
+export NEW_LABELS=lat,lon,id,price,revenue,ratio,url,residentialUnits,score,timestamp,recent
+
+sed -e "s/$CURRENT_LABELS/$NEW_LABELS/" data/exports/prospects.csv > data/exports/prospects-titles.csv
+
 
 echo 5. Cleaning up
 rm data/updates.json

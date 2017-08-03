@@ -1,8 +1,8 @@
+location.coordinates.1
+location.coordinates.0
 id
 price
 revenue
-location.coordinates.0
-location.coordinates.1
 calculated.ratio
 url
 residentialUnits
