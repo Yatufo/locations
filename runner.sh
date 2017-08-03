@@ -1,6 +1,6 @@
 #! /bin/sh
 
-without docker: protractor protractor.conf.js
+#without docker: protractor protractor.conf.js
 echo 1. Running the scraper:
 ./protractor-headless.sh protractor.conf.js
 
