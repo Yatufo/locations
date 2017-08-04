@@ -3,8 +3,13 @@ const fs = require('fs');
 const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/updates.json";
 
-const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE,{flags: 'a', defaultEncoding: 'utf8'});
-const scrapedwriter = fs.createWriteStream(SCRAPED_DETAILS_FILE, {defaultEncoding: 'utf8'});
+const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE, {
+  flags: 'a',
+  defaultEncoding: 'utf8'
+});
+const scrapedwriter = fs.createWriteStream(SCRAPED_DETAILS_FILE, {
+  defaultEncoding: 'utf8'
+});
 
 describe('real state information', function() {
 
@@ -13,7 +18,10 @@ describe('real state information', function() {
 
     function scrapeDetails(prospect) {
       return pages.details.scrape(prospect.url)
-        .then((scraped) => Object.assign(prospect, scraped));
+        .then((scraped) => {
+          Object.assign(prospect, scraped)
+          console.log("scraped id:", scraped.id);
+        });
     }
 
     function scrapeSearch(search) {
@@ -21,7 +29,6 @@ describe('real state information', function() {
     }
 
     function saveAllResults(results) {
-      //const results = require("../" + SCRAPED_GRID_FILE); // Only if required.
       const resultsToUpdate = results.filter((p) => p.updated);
 
       Promise.all(resultsToUpdate.map(scrapeDetails))
@@ -39,6 +46,7 @@ describe('real state information', function() {
       ])
       .then(([commercial, residential]) => commercial.concat(residential))
       .then((results) => {
+        results.forEach((r) => r.timestamp = startTime);
         gridwriter.write(JSON.stringify(results, null, 2))
         return results;
       })
