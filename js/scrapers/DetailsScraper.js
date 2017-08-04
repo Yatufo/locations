@@ -72,5 +72,6 @@ module.exports = () => {
     commercial: numbersFound[1] ? parseInt(numbersFound[1]) : 0
   }
 
+  console.log("scraped id:", details.id);
   return details;
 };
