@@ -36,8 +36,19 @@ describe('real state information', function() {
         .then((results) => scrapedwriter.write(JSON.stringify(results, null, 2)));
     }
 
+    function uniqueResults(results) {
+          const uniqueIds = [];
+          results.forEach((r) => r.timestamp = startTime);
+
+          return results.filter((item) => {
+            const isNotDuplicated = !uniqueIds.includes(item.id);
+            if (isNotDuplicated) uniqueIds.push(item);
+            return isNotDuplicated;
+          });
+    }
+
     // const results = require("../" + SCRAPED_GRID_FILE); // Only if required.
-    // saveAllResults(results)
+    // saveAllResults(uniqueResults(results));
 
 
     Promise.all([
@@ -45,8 +56,8 @@ describe('real state information', function() {
         scrapeSearch(pages.search.searchForResidentialPlexes)
       ])
       .then(([commercial, residential]) => commercial.concat(residential))
-      .then((results) => {
-        results.forEach((r) => r.timestamp = startTime);
+      .then(uniqueResults);
+      .then((results) => {        
         gridwriter.write(JSON.stringify(results, null, 2))
         return results;
       })
