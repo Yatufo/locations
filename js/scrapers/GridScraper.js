@@ -11,8 +11,12 @@ module.exports = () => {
        sel : 'div.thumbnail > a',
        attr : 'href'
     },
+    price: {
+      sel: 'div.description p.price span:nth-child(2)',
+      attr: 'content'
+    },
     updated: {
-      sel : 'div.banner > .new-property, .new-price',
+      sel : 'div.banner.new-property, div.banner.new-price',
       method : function($) {
         return $(this).length == 1;
       }

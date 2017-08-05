@@ -19,8 +19,8 @@ describe('real state information', function() {
     function scrapeDetails(prospect) {
       return pages.details.scrape(prospect.url)
         .then((scraped) => {
-          Object.assign(prospect, scraped)
           console.log("scraped id:", scraped.id);
+          return Object.assign(prospect, scraped)
         });
     }
 
@@ -29,27 +29,16 @@ describe('real state information', function() {
     }
 
     function saveAllResults(results) {
+      results.forEach((r) => r.timestamp = startTime);
+
       const resultsToUpdate = results.filter((p) => p.updated);
       const resultsReady = results.filter((p) => !p.updated);
 
       return Promise.all(resultsToUpdate.map(scrapeDetails))
         .then((resultsUpdated) => resultsReady.concat(resultsUpdated))
-        .then((results) => scrapedWriter.write(JSON.stringify(results, null, 2)));
+        .then((resultsWithDetails) => scrapedWriter.write(JSON.stringify(resultsWithDetails, null, 2)));
     }
 
-    function uniqueResults(results) {
-          const uniqueIds = [];
-          results.forEach((r) => r.timestamp = startTime);
-
-          return results.filter((item) => {
-            const isNotDuplicated = !uniqueIds.includes(item.id);
-            if (isNotDuplicated) {
-              uniqueIds.push(item.id);
-              console.log("duplicated", item.id);
-            }
-            return isNotDuplicated;
-          });
-    }
 
     Promise.all([
         scrapeSearch(pages.search.searchForCommercialPlexes),

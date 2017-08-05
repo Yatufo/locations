@@ -5,7 +5,7 @@ const selectors = {
   BUTTON_COMMERCIAL: '#commercial',
   OPTION_MULTIFAMILY: '#item-property > button:nth-child(10)',
   OPTION_PLEX: '#item-property > button:nth-child(5)',
-  BUTTON_SEARCH: '#search-form-bottom-actions button.btn.btn-search',
+  BUTTON_SEARCH: '#submit-search',
   SELECTOR_ORDER: '#selectSortById',
   SELECT_RECENT: '#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
   BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
