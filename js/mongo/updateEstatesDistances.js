@@ -1,7 +1,5 @@
 
-/***
- * Updates the distances from all points of interest for all the estates.
-**/
+// Updates the distances from all points of interest for all the estates.
 // load script to be able to use them in mongo.
 function updateAllEstatesDistances(distance) {
 
@@ -16,14 +14,13 @@ function updateAllEstatesDistances(distance) {
         });
     })
 }
-/***
- * Searches all the estates near one point
- *   location is a mongo point, example:
- *   {
- *     type: "Point",
- *     coordinates: [45.446248, -73.603927]
- *   }
-**/
+
+// Searches all the estates near one point
+// location is a mongo point, example:
+// {
+//   type: "Point",
+//   coordinates: [45.446248, -73.603927]
+// }
 function findEstatesNearBy(location, maxDistance) {
   return db.runCommand({
     geoNear: "estates",
@@ -34,7 +31,7 @@ function findEstatesNearBy(location, maxDistance) {
 }
 
 
-/// Update distances to points of interest.
+// Update distances to points of interest.
 function updateInterestDistance(interest, nearResult) {
   var id = nearResult.obj._id;
   var distance = Math.round(nearResult.dis);
@@ -53,6 +50,6 @@ function updateInterestDistance(interest, nearResult) {
 
 
 //register functions in mongo
-db.system.js.save({_id: 'findEstatesNearBy',value: findEstatesNearBy});
-db.system.js.save({_id: 'updateInterestDistance', value: updateInterestDistance});
+db.system.js.save({_id: 'findEstatesNearBy', value: findEstatesNearBy});
 db.system.js.save({_id: 'updateAllEstatesDistances', value: updateAllEstatesDistances});
+db.system.js.save({_id: 'updateInterestDistance', value: updateInterestDistance});

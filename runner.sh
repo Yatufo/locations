@@ -23,7 +23,7 @@ export CURRENT_LABELS=location.coordinates.1,location.coordinates.0,id,price,rev
 
 export NEW_LABELS=lat,lon,id,price,revenue,ratio,url,residentialUnits,score,timestamp,recent
 
-sed -e "s/$CURRENT_LABELS/$NEW_LABELS/" data/prospects.csv > data/prospects-latest.csv
+sed -e "s/$CURRENT_LABELS/$NEW_LABELS/" data/prospects.csv > data/results/prospects-latest.csv
 
 
 echo 5. Cleaning up
