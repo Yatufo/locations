@@ -2,9 +2,12 @@
 
 #without docker: protractor protractor.conf.js
 echo 1. Running the scraper:
-./protractor-headless.sh protractor.conf.js
+#./protractor-headless.sh protractor.conf.js
 
-echo 2. Importing the scraped data
+echo 2.1 Start mongo in case is not running
+docker start centrisdb
+
+echo 2.2 Importing the scraped data
 mongoimport -h localhost:27017 --db realestate --collection updates \
   --mode upsert --upsertFields id,timestamp  --jsonArray data/updates.json
 

@@ -3,7 +3,6 @@ const fs = require('fs');
 const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/updates.json";
 
-const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
 const scrapedWriter = fs.createWriteStream(SCRAPED_DETAILS_FILE);
 
 describe('real state information', function() {
@@ -39,6 +38,7 @@ describe('real state information', function() {
       scrapeSearch(pages.search.searchForCommercialPlexes)
       .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
       .then((results) => {
+        const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
         gridwriter.write(JSON.stringify(results, null, 2))
         return results;
       })
