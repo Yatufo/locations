@@ -8,11 +8,11 @@ module.exports = {
         window.scrape = eval(arguments[0]);
       }, scrapeDefinition.toString())
       .then(() => {
-        return browser.driver.sleep(1000);
+        return browser.driver.sleep(2000);
       });
   },
   waitPageLoaded: () => {
-    return waitFor('#ButtonViewThumbnail');
+    return browser.driver.sleep(500).then(() => waitFor('#ButtonViewThumbnail'));
   },
   scrape : () => {
     return browser.executeScript("return scrape();");

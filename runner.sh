@@ -2,7 +2,7 @@
 
 #without docker: protractor protractor.conf.js
 echo 1. Running the scraper:
-protractor protractor.conf.js
+./protractor-headless.sh protractor.conf.js
 
 echo 2. Importing the scraped data
 mongoimport -h localhost:27017 --db realestate --collection updates \

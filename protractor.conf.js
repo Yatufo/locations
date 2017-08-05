@@ -21,7 +21,7 @@ exports.config = {
   baseUrl: 'http://www.centris.ca/en',
   onPrepare: () => {
     var width = 1440;
-    var height = 900;
+    var height = 1024;
     browser.driver.manage().window().setSize(width, height);
     browser.driver.manage().window().maximize();
 

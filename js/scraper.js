@@ -7,7 +7,7 @@ const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE, {
   flags: 'a',
   defaultEncoding: 'utf8'
 });
-const scrapedwriter = fs.createWriteStream(SCRAPED_DETAILS_FILE, {
+const scrapedWriter = fs.createWriteStream(SCRAPED_DETAILS_FILE, {
   defaultEncoding: 'utf8'
 });
 
@@ -30,10 +30,11 @@ describe('real state information', function() {
 
     function saveAllResults(results) {
       const resultsToUpdate = results.filter((p) => p.updated);
+      const resultsReady = results.filter((p) => !p.updated);
 
-      Promise.all(resultsToUpdate.map(scrapeDetails))
-        .then((resultsUpdated) => results.filter((p) => !p.updated).concat(resultsUpdated))
-        .then((results) => scrapedwriter.write(JSON.stringify(results, null, 2)));
+      return Promise.all(resultsToUpdate.map(scrapeDetails))
+        .then((resultsUpdated) => resultsReady.concat(resultsUpdated))
+        .then((results) => scrapedWriter.write(JSON.stringify(results, null, 2)));
     }
 
     function uniqueResults(results) {
@@ -42,26 +43,26 @@ describe('real state information', function() {
 
           return results.filter((item) => {
             const isNotDuplicated = !uniqueIds.includes(item.id);
-            if (isNotDuplicated) uniqueIds.push(item);
+            if (isNotDuplicated) {
+              uniqueIds.push(item.id);
+              console.log("duplicated", item.id);
+            }
             return isNotDuplicated;
           });
     }
-
-    // const results = require("../" + SCRAPED_GRID_FILE); // Only if required.
-    // saveAllResults(uniqueResults(results));
-
 
     Promise.all([
         scrapeSearch(pages.search.searchForCommercialPlexes),
         scrapeSearch(pages.search.searchForResidentialPlexes)
       ])
       .then(([commercial, residential]) => commercial.concat(residential))
-      .then(uniqueResults);
-      .then((results) => {        
+      .then(uniqueResults)
+      .then((results) => {
         gridwriter.write(JSON.stringify(results, null, 2))
         return results;
       })
-      .then(saveAllResults);
+      .then(saveAllResults)
+      .catch((e) => console.log(e));
 
 
   });

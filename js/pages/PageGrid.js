@@ -23,6 +23,7 @@ const gridPage = {
 }
 
 const prospects = [];
+const prospectIds = [];
 let currentId = "";
 
 function afterScraping([results, status]) {
@@ -33,7 +34,15 @@ function afterScraping([results, status]) {
 
   if (infoIsLoaded) {
     currentId = first.id;
-    results.forEach((item) => prospects.push(item));
+    results.forEach((item) => {
+      if(!prospectIds.includes(item.id)) {
+        prospects.push(item)
+        prospectIds.push(item.id);
+      } else {
+        console.log("Ignoring scraped id:", item.id);
+      }
+    });
+
     console.log("status: ", current, ' / ', total);
     return (notFinished ? gridPage.next().then(scrape) : Promise.resolve(prospects));
   } else {
