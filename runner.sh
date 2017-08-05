@@ -22,7 +22,7 @@ mongoexport --db realestate --collection estates --type=csv \
 --fieldFile data/exportFields.txt --out data/prospects.csv
 
 echo 5. Rename the csv file titles:
-export CURRENT_LABELS=location.coordinates.1,location.coordinates.0,id,price,revenue,calculated.ratio,url,residentialUnits,score,timestamp,calculated.recent
+export CURRENT_LABELS=location.coordinates.0,location.coordinates.1,id,price,revenue,calculated.ratio,url,residentialUnits,score,timestamp,calculated.recent
 
 export NEW_LABELS=lat,lon,id,price,revenue,ratio,url,residentialUnits,score,timestamp,recent
 
