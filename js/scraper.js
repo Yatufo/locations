@@ -3,13 +3,8 @@ const fs = require('fs');
 const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/updates.json";
 
-const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE, {
-  flags: 'a',
-  defaultEncoding: 'utf8'
-});
-const scrapedWriter = fs.createWriteStream(SCRAPED_DETAILS_FILE, {
-  defaultEncoding: 'utf8'
-});
+const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
+const scrapedWriter = fs.createWriteStream(SCRAPED_DETAILS_FILE);
 
 describe('real state information', function() {
 
@@ -39,18 +34,16 @@ describe('real state information', function() {
         .then((resultsWithDetails) => scrapedWriter.write(JSON.stringify(resultsWithDetails, null, 2)));
     }
 
+    // saveAllResults(require("../" + SCRAPED_GRID_FILE));
 
-    Promise.all([
-        scrapeSearch(pages.search.searchForCommercialPlexes),
-        scrapeSearch(pages.search.searchForResidentialPlexes)
-      ])
-      .then(([commercial, residential]) => commercial.concat(residential))
-      .then(uniqueResults)
+      scrapeSearch(pages.search.searchForCommercialPlexes)
+      .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
       .then((results) => {
         gridwriter.write(JSON.stringify(results, null, 2))
         return results;
       })
       .then(saveAllResults)
+      .catch((e) => console.log("Finished!!"))
       .catch((e) => console.log(e));
 
 
