@@ -1,4 +1,6 @@
 module.exports = () => {
+
+  //TODO: Remove duplication by loading all scrapers via the browser like with artoo.
   const formatters = {
     arrayOfNumbers: (text) => {
       const floatPattern = /\d+\,?\d+/g;
@@ -9,8 +11,8 @@ module.exports = () => {
       return first || null;
     },
     dimensions: (text) => {
-      const [width, length] = formatters.arrayOfNumbers(text);
-      return { width: width, length: length};
+      const [width, depth] = formatters.arrayOfNumbers(text);
+      return { 'width' : width, 'depth': depth};
     }
   }
 

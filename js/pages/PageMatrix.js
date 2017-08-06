@@ -7,8 +7,9 @@ const pageMatrix = {
   scrape: (id) => {
         const LINK_ID = element(by.linkText(id));
         return browser.get(browser.params.matrixUrl)
-        .then(() => waitAndClick(LINK_ID)) //open the criterias
+        .then(() => waitAndClick(LINK_ID, 300)) //open the criterias
         .then(pageMatrix.init).then(utils.scrape)
+        .catch((e) => console.log("Not found on the first page, ignore id: ", id, e.message));
   }
 }
 module.exports = pageMatrix;
