@@ -19,40 +19,8 @@ const gridPage = {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((text) => text.split('/').map((s) => parseInt(s)));
   },
-  scrapeAll: scrape
+  scrapeAll: () => utils.scrapeAll(gridPage)
 }
 
-const prospects = [];
-const prospectIds = [];
-let currentId = "";
-
-function afterScraping([results, status]) {
-  const [current, total] = status;
-  const notFinished = current < total;
-  const [first] = results;
-  const infoIsLoaded = currentId !== first.id;
-
-  if (infoIsLoaded) {
-    currentId = first.id;
-    results.forEach((item) => {
-      if(!prospectIds.includes(item.id)) {
-        prospects.push(item)
-        prospectIds.push(item.id);
-      } else {
-        console.log("Ignoring scraped id:", item.id);
-      }
-    });
-
-    console.log("status: ", current, ' / ', total);
-    return (notFinished ? gridPage.next().then(scrape) : Promise.resolve(prospects));
-  } else {
-    console.log("Ignoring already processed id: " + first.id + ' and trying again');
-    return scrape();
-  }
-}
-
-function scrape() {
-  return Promise.all([utils.scrape(), gridPage.getStatus()]).then(afterScraping);
-}
 
 module.exports = gridPage;
