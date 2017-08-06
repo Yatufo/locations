@@ -1,23 +1,22 @@
 "use strict";
 const formatters = require('./ScrapeUtils.js').formatters;
 
-
-
 module.exports = () => {
+
   scrapeDetailsSchema = {
-    taxMunicipal: () => getTextBeside("Taxes municipales", formatters.numberOnly),
-    taxSchool: () => getTextBeside("Taxe scolaire", formatters.numberOnly),
-    dimensionsBuilding: () => getTextBeside("Dimensions du bâtiment", formatters.dimensions),
-    dimensionsLot: () => getTextBeside("Dimensions du terrain", formatters.dimensions),
-    evaluationLot: () => getTextBeside("Évaluation du terrain", formatters.numberOnly),
-    evaluationBuilding: () => getTextBeside("Évaluation du bâtiment", formatters.numberOnly),
-    otherExpenses: () => getTextBeside("Autres", formatters.numberOnly)
+    taxMunicipal: () => getValueFor("Municipal Taxes", formatters.numberOnly),
+    taxSchool: () => getValueFor("School Taxes", formatters.numberOnly),
+    dimensionsBuilding: () => getValueFor("Building Size", formatters.dimensions),
+    dimensionsLot: () => getValueFor("Lot Size", formatters.dimensions),
+    evaluationLot: () => getValueFor("Lot Assessment", formatters.numberOnly),
+    evaluationBuilding: () => getValueFor("Building Assessment", formatters.numberOnly),
+    otherExpenses: () => getValueFor("Other", formatters.numberOnly)
   }
 
-  function getTextBeside(name, format) {
+  function getValueFor(name, format) {
     const text = $('td:contains("' + name + '"):not(:has(table))').next().text();
     return (format ? format(text) : text);
   }
 
-  const details = artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema);
+  artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema);
 };
