@@ -1,9 +1,20 @@
-"use strict";
-const formatters = require('./ScrapeUtils.js').formatters;
-
 module.exports = () => {
+  const formatters = {
+    arrayOfNumbers: (text) => {
+      const floatPattern = /\d+\,?\d+/g;
+      return (text.replace(/\s/g, "").replace(",", "").match(floatPattern) || []).map((t) => parseInt(t));
+    },
+    numberOnly: (text) => {
+      const [first] = formatters.arrayOfNumbers(text);
+      return first || null;
+    },
+    dimensions: (text) => {
+      const [width, length] = formatters.arrayOfNumbers(text);
+      return { width: width, length: length};
+    }
+  }
 
-  scrapeDetailsSchema = {
+  const scrapeDetailsSchema = {
     taxMunicipal: () => getValueFor("Municipal Taxes", formatters.numberOnly),
     taxSchool: () => getValueFor("School Taxes", formatters.numberOnly),
     dimensionsBuilding: () => getValueFor("Building Size", formatters.dimensions),
@@ -18,5 +29,5 @@ module.exports = () => {
     return (format ? format(text) : text);
   }
 
-  artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema);
+  return artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema);
 };

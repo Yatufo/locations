@@ -11,10 +11,10 @@ describe('real state information', function() {
     const startTime = new Date().getTime();
 
     function scrapeDetails(prospect) {
-      return pages.details.scrape(prospect.url)
-        .then((scraped) => {
-          console.log("scraped id:", scraped.id);
-          return Object.assign(prospect, scraped)
+      return Promise.all([pages.details.scrape(prospect.url), pages.matrix.scrape(prospect.id)])
+        .then(([details, extras]) => {
+          console.log("scraped id:", prospect.id);
+          return Object.assign(prospect, details, { extras : extras })
         });
     }
 
@@ -33,18 +33,19 @@ describe('real state information', function() {
         .then((resultsWithDetails) => scrapedWriter.write(JSON.stringify(resultsWithDetails, null, 2)));
     }
 
-    // saveAllResults(require("../" + SCRAPED_GRID_FILE));
+    //saveAllResults(require("../" + SCRAPED_GRID_FILE)).catch((e) => console.log(e));
 
-      scrapeSearch(pages.search.searchForCommercialPlexes)
-      .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
-      .then((results) => {
-        const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
-        gridwriter.write(JSON.stringify(results, null, 2))
-        return results;
-      })
-      .then(saveAllResults)
-      .catch((e) => console.log("Finished!!"))
-      .catch((e) => console.log(e));
+
+    scrapeSearch(pages.search.searchForCommercialPlexes)
+    .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
+    .then((results) => {
+      const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
+      gridwriter.write(JSON.stringify(results, null, 2))
+      return results;
+    })
+    .then(saveAllResults)
+    .catch((e) => console.log("Finished!!"))
+    .catch((e) => console.log(e));
 
 
   });

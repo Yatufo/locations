@@ -1,4 +1,4 @@
-"use strict";
+
 
 module.exports = {
   loadScraper: (scrapeDefinition) => {
@@ -11,7 +11,7 @@ module.exports = {
       });
   },
   waitPageLoaded: () => {
-    return browser.driver.sleep(500).then(() => waitFor('#ButtonViewThumbnail'));
+    return browser.driver.sleep(500);
   },
   scrape : () => {
     return browser.executeScript("return scrape();");

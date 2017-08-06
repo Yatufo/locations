@@ -2,7 +2,7 @@ var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
   params: {
-    startId: undefined
+    matrixUrl: "http://matrix.centris.ca/Matrix/Public/Portal.aspx?ID=1-1123550629-11&L=1"
   },
   specs: ['js/scraper.js'],
   capabilities: {
