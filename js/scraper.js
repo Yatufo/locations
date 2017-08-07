@@ -14,7 +14,9 @@ describe('real state information', function() {
       return Promise.all([pages.details.scrape(prospect.url), pages.matrix.scrape(prospect.id)])
         .then(([details, extras]) => {
           console.log("scraped id:", prospect.id);
-          return Object.assign(prospect, details, { extras : extras })
+          return Object.assign(prospect, details, {
+            extras: extras
+          })
         });
     }
 
@@ -37,17 +39,28 @@ describe('real state information', function() {
 
 
     scrapeSearch(pages.search.searchForCommercialPlexes)
-    .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
-    .then((results) => {
-      const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
-      gridwriter.write(JSON.stringify(results, null, 2))
-      return results;
-    })
-    .then(saveAllResults)
-    .catch((e) => console.log("Finished!!"))
-    .catch((e) => console.log(e));
+      .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
+      .then((results) => {
+        const gridwriter = fs.createWriteStream(SCRAPED_GRID_FILE);
+        gridwriter.write(JSON.stringify(results, null, 2))
+        return results;
+      })
+      .then(saveAllResults)
+      .then((e) => console.log("Finished!!"))
+      .catch((e) => console.log(e));
 
 
   });
+
+  fit('get the details from the matrix', () => {
+
+    pages.matrix.first()
+      .then(pages.matrix.init)
+      .then(pages.matrix.scrapeAll)
+      .then((e) => console.log("Finished!!"))
+      .catch((e) => console.log(e));
+
+  });
+
 
 });

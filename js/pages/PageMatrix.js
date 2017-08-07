@@ -4,17 +4,21 @@ const scraper = require('../scrapers/MatrixDetailsScraper.js');
 const selectors = {
   BUTTON_NEXT_SUMMARY: element(by.linkText("next")),
   LABEL_PAGE_STATUS: '#_ctl0_m_tdCloseFullLink',
-  FIRST_LINK: 'span.pagingLinks'
+  FIRST_PROSPECT_LINK: element.all(by.css('#wrapperTable a')).first()
 };
 
 const matrixPage = {
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
   scrape: (id) => {
-        const LINK_ID = element(by.linkText(id));
-        return browser.get(browser.params.matrixUrl)
-        .then(() => waitAndClick(LINK_ID, 300)) //open the criterias
-        .then(matrixPage.init).then(utils.scrape)
-        .catch((e) => console.log("Not found on the first page, ignore id: ", id, e.message));
+    const LINK_ID = element(by.linkText(id));
+    return browser.get(browser.params.matrixUrl)
+      .then(() => waitAndClick(LINK_ID, 300)) //open the criterias
+      .then(matrixPage.init).then(utils.scrape)
+      .catch((e) => console.log("Not found on the first page, ignore id: ", id, e.message));
+  },
+  first: () => {
+    return browser.get(browser.params.matrixUrl)
+    .then(() => waitAndClick(selectors.FIRST_PROSPECT_LINK));
   },
   next: () => {
     return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
@@ -22,8 +26,8 @@ const matrixPage = {
       .then(this.init); // waits so the ajax call has time to come back.
   },
   getStatus: () => {
-    return toElement(selectors.LABEL_PAGE_STATUS).element(by.xpath("..")).getText()
-      .then(utils.formatters.arrayOfNumbers).then(([current,ignore,total]) => [current, total]);
+    return element(by.css(selectors.LABEL_PAGE_STATUS)).element(by.xpath("..")).getText()
+      .then(utils.formatters.arrayOfInts);
   },
   scrapeAll: () => utils.scrapeAll(matrixPage)
 }
