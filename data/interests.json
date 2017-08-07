@@ -1,4 +1,4 @@
-  [{
+[{
     "name": "Angrignon",
     "location": {
       "type": "Point",
@@ -406,4 +406,168 @@
       "type": "Point",
       "coordinates": [45.559709, -73.599752]
     }
-  }]
+  },
+  {
+    "name": "SAINTE-ANNE-DE-BELLEVUE",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.428230, -73.916320]
+    }
+  }, {
+    "name": "KIRKLAND",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.440033, -73.886305]
+    }
+  }, {
+    "name": "POINTE-CLAIRE",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.459618, -73.835552]
+    }
+  }, {
+    "name": "DES SOURCES",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.477597, -73.790110]
+    }
+  }, {
+    "name": "AÉROPORT DE MONTRÉAL",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.469855, -73.744972]
+    }
+  }, {
+    "name": "TECHNOPARC MONTRÉAL",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.480085, -73.760373]
+    }
+  }, {
+    "name": "AUTOROUTE 13",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.500151, -73.756390]
+    }
+  }, {
+    "name": "SUNNYBROOKE",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.503969, -73.786179]
+    }
+  }, {
+    "name": "ROXBORO-PIERREFONDS",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.509377, -73.810159]
+    }
+  }, {
+    "name": "ÎLE-BIGRAS",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.520075, -73.852992]
+    }
+  }, {
+    "name": "SAINTE-DOROTHÉE",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.523439, -73.862795]
+    }
+  }, {
+    "name": "GRAND-MOULIN",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.537468, -73.888179]
+    }
+  }, {
+    "name": "DEUX-MONTAGNES",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.545872, -73.913109]
+    }
+  }, {
+    "name": "BOIS-FRANC",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.522988, -73.709649]
+    }
+  }, {
+    "name": "DU RUISSEAU",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.528895, -73.690652]
+    }
+  }, {
+    "name": "MONTPELLIER",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.524707, -73.672187]
+    }
+  }, {
+    "name": "CORRESPONDANCE A40",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.522341, -73.663606]
+    }
+  }, {
+    "name": "MONT-ROYAL",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.516893, -73.645055]
+    }
+  }, {
+    "name": "CANORA",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.513771, -73.634315]
+    }
+  }, {
+    "name": "ÉDOUARD-MONTPETIT",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.510147, -73.612539]
+    }
+  }, {
+    "name": "MCGILL",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.502594, -73.572357]
+    }
+  }, {
+    "name": "GARE CENTRALE",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.499438, -73.565490]
+    }
+  }, {
+    "name": "BASSIN PEEL",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.492030, -73.553477]
+    }
+  }, {
+    "name": "ÎLE DES SŒURS",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.470236, -73.539175]
+    }
+  }, {
+    "name": "PANAMA",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.465011, -73.469938]
+    }
+  }, {
+    "name": "DU QUARTIER",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.447189, -73.433911]
+    }
+  }, {
+    "name": "TERMINALE RIVE-SUD",
+    "location": {
+      "type": "Point",
+      "coordinates": [45.437723, -73.433391]
+    }
+  }
+]
