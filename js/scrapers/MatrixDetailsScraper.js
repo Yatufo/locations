@@ -17,6 +17,7 @@ module.exports = () => {
   }
 
   const scrapeDetailsSchema = {
+    id : () => getValueFor("Centris® No."),
     taxMunicipal: () => getValueFor("Municipal Taxes", formatters.numberOnly),
     taxSchool: () => getValueFor("School Taxes", formatters.numberOnly),
     dimensionsBuilding: () => getValueFor("Building Size", formatters.dimensions),
@@ -31,5 +32,5 @@ module.exports = () => {
     return (format ? format(text) : text);
   }
 
-  return artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema);
+  return [artoo.scrapeOne('#wrapperTable', scrapeDetailsSchema)];
 };

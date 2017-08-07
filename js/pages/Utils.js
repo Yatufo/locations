@@ -66,7 +66,7 @@ function afterScraping(results, status, page) {
     return (notFinished ? page.next().then(() => scrapeAll(page)) : Promise.resolve(prospects));
   } else {
     console.log("Ignoring already processed id: " + first.id + ' and trying again');
-    return scrapeAll();
+    return scrapeAll(page);
   }
 }
 
