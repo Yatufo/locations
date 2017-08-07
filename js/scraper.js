@@ -12,15 +12,15 @@ describe('real state information', function() {
     const startTime = new Date().getTime();
 
     function scrapeDetails(prospect) {
-      return Promise.all([pages.details.scrape(prospect.url), pages.matrix.scrape(prospect.id)])
-        .then(([details, extras]) => {
+      return pages.details.scrape(prospect.url)
+        .then((details) => {
           console.log("scraped id:", prospect.id);
           return Object.assign(prospect, details);
         });
     }
 
-    function scrapeSearch(search) {
-      return search().then(pages.grid.init).then(pages.grid.scrapeAll);
+    function scrapeSearch(search, initial) {
+      return search().then(pages.grid.init).then(() => pages.grid.scrapeAll(initial));
     }
 
     function saveAllResults(results) {
@@ -38,7 +38,7 @@ describe('real state information', function() {
 
 
     scrapeSearch(pages.search.searchForCommercialPlexes)
-      .then(() => scrapeSearch(pages.search.searchForResidentialPlexes))
+      .then((commercial) => scrapeSearch(pages.search.searchForResidentialPlexes, commercial))
       .then((results) => {
         const writer = fs.createWriteStream(SCRAPED_GRID_FILE);
         writer.write(JSON.stringify(results, null, 2))

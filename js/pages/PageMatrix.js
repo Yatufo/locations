@@ -25,6 +25,6 @@ const matrixPage = {
     return element(by.css(selectors.LABEL_PAGE_STATUS)).element(by.xpath(".."))
     .getText().then(utils.formatters.arrayOfInts);
   },
-  scrapeAll: () => utils.scrapeAll(matrixPage)
+  scrapeAll: (initial) => utils.scrapeAll(matrixPage, initial)
 }
 module.exports = matrixPage;

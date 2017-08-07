@@ -16,7 +16,10 @@ const formatters = {
   },
   dimensions: (text) => {
     const [width, length] = formatters.arrayOfFloat(text);
-    return { width: width, length: length};
+    return {
+      width: width,
+      length: length
+    };
   }
 }
 
@@ -41,38 +44,48 @@ const utils = {
 }
 
 
-const prospects = [];
-const prospectIds = [];
-let currentId = "";
+function processInfo(partial, cumulative, previousFirstId) {
+  const [first] = partial;
+  const cumulativeIds = cumulative.map((c) => c.id);
+  const lastPartial = (partial.slice(-1)[0] || {}).id;
+  const isNewItems = previousFirstId !== first.id
 
-function afterScraping(results, status, page) {
-  const [current, total] = status;
-  const notFinished = current < total;
-  const [first] = results;
-  const infoIsLoaded = currentId !== first.id;
-
-  if (infoIsLoaded) {
-    currentId = first.id;
-    results.forEach((item) => {
-      if (!prospectIds.includes(item.id)) {
-        prospects.push(item)
-        prospectIds.push(item.id);
+  if (isNewItems) {
+    partial.forEach((item) => {
+      if (!cumulativeIds.includes(item.id)) {
+        cumulative.push(item)
       } else {
         console.log("Ignoring scraped id:", item.id);
       }
     });
-
-    console.log("status: ", current, ' / ', total);
-    return (notFinished ? page.next().then(() => scrapeAll(page)) : Promise.resolve(prospects));
   } else {
     console.log("Ignoring already processed id: " + first.id + ' and trying again');
-    return scrapeAll(page);
   }
+
+  return isNewItems;
 }
 
-function scrapeAll(page) {
+
+function scrapeAll(page, cumulative, currentFirstId) {
+  cumulative = cumulative || [];
   return Promise.all([utils.scrapeCurrent(), page.getStatus()])
-    .then(([results, status]) => afterScraping(results, status, page));
+    .then(([partial, status]) => {
+      const [current, total] = status;
+      const isFinished = current == total;
+      const isProcessed = processInfo(partial, cumulative, currentFirstId);
+      console.log("status: ", current, ' / ', total);
+
+      let result = Promise.resolve(cumulative);
+
+      if (isProcessed && !isFinished){
+        const [first] = partial;
+        result = page.next().then(() => scrapeAll(page, cumulative, first.id))
+      } else if (!isProcessed){
+        result = scrapeAll(page, cumulative, currentFirstId)
+      }
+
+      return result;
+    })
 }
 
 
