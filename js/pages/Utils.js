@@ -47,7 +47,7 @@ let currentId = "";
 
 function afterScraping(results, status, page) {
   const [current, total] = status;
-  const notFinished = current < 2; //total;
+  const notFinished = current < total;
   const [first] = results;
   const infoIsLoaded = currentId !== first.id;
 
