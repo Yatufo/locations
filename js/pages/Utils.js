@@ -71,7 +71,7 @@ function scrapeAll(page, cumulative, currentFirstId) {
   return Promise.all([utils.scrapeCurrent(), page.getStatus()])
     .then(([partial, status]) => {
       const [current, total] = status;
-      const isFinished = current == total;
+      const isFinished = current == total; //TODO ADD a limit.
       const isProcessed = processInfo(partial, cumulative, currentFirstId);
       console.log("status: ", current, ' / ', total);
 
