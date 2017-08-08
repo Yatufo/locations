@@ -1,6 +1,18 @@
-
-
 module.exports = () => {
+  const floatPattern = /\d+\.?\d+/g;
+  const formatters = {
+    arrayOfFloat: (text) => {
+      return (text.replace(/\s/g, "").replace(",", "").match(floatPattern) || []).map((t) => parseInt(t));
+    },
+    numberOnly: (text) => {
+      const [first] = formatters.arrayOfFloat(text);
+      return first || null;
+    },
+    dimensions: (text) => {
+      const [width, length] = formatters.arrayOfFloat(text);
+      return { width: width, length: length};
+    }
+  }
 
   const scrapeDetailsSchema = {
     id: () => {
@@ -51,18 +63,12 @@ module.exports = () => {
     };
   };
 
-  function getNumberOnly(formattedString) {
-    const floatPattern = /\d+\,?\d+/g;
-    const numbersFound = formattedString.match(floatPattern) || [];
-    return (numbersFound.length > 0) ? parseFloat(numbersFound[0].replace(',', '')) : null;
-  };
-
   const details = artoo.scrapeOne('#overview div.description', scrapeDetailsSchema);
-  details.score = getNumberOnly(details.score);
-  details.area = getNumberOnly(details.area);
-  details.revenue = getNumberOnly(details.revenue);
-  details.year = getNumberOnly(details.year);
-  details.price = getNumberOnly(details.price);
+  details.score = formatters.numberOnly(details.score);
+  details.area = formatters.numberOnly(details.area);
+  details.revenue = formatters.numberOnly(details.revenue);
+  details.year = formatters.numberOnly(details.year);
+  details.price = formatters.numberOnly(details.price);
 
 
   const integerPattern = /\d+/g;
