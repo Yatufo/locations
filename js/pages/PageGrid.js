@@ -19,7 +19,7 @@ const gridPage = {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((text) => text.split('/').map((s) => parseInt(s)));
   },
-  scrapeAll: (initial) => utils.scrapeAll(gridPage, initial)
+  scrapeAll: (initial, limit) => utils.scrapeAll(gridPage, initial, limit)
 }
 
 

@@ -66,12 +66,12 @@ function processInfo(partial, cumulative, previousFirstId) {
 }
 
 
-function scrapeAll(page, cumulative, currentFirstId) {
+function scrapeAll(page, cumulative, limit, currentFirstId) {
   cumulative = cumulative || [];
   return Promise.all([utils.scrapeCurrent(), page.getStatus()])
     .then(([partial, status]) => {
       const [current, total] = status;
-      const isFinished = current == total; //TODO ADD a limit.
+      const isFinished = current == total || (limit && cumulative.length >= limit);
       const isProcessed = processInfo(partial, cumulative, currentFirstId);
       console.log("status: ", current, ' / ', total);
 
@@ -79,9 +79,9 @@ function scrapeAll(page, cumulative, currentFirstId) {
 
       if (isProcessed && !isFinished){
         const [first] = partial;
-        result = page.next().then(() => scrapeAll(page, cumulative, first.id))
+        result = page.next().then(() => scrapeAll(page, cumulative, limit, first.id))
       } else if (!isProcessed){
-        result = scrapeAll(page, cumulative, currentFirstId)
+        result = scrapeAll(page, cumulative, limit, currentFirstId)
       }
 
       return result;

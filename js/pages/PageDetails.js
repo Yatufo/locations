@@ -20,6 +20,6 @@ const pageDetails = {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((t) => utils.formatters.arrayOfInts(t.replace(",", "")));
   },
-  scrapeAll: (initial) => utils.scrapeAll(pageDetails, initial)
+  scrapeAll: (initial, limit) => utils.scrapeAll(pageDetails, initial, limit)
 }
 module.exports = pageDetails;

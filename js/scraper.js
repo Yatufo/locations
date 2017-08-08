@@ -3,8 +3,18 @@ const fs = require('fs');
 const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/updates.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
+const MAX_GRID_RESULTS = false;
+const MAX_DETAILS_RESULTS = 5;
+const MAX_EXTRAS_RESULTS = 5;
 
 describe('real state information', function() {
+
+  function scrapeSearch(search, page, initial, limit) {
+    return search()
+      .then(page.first)
+      .then(page.init)
+      .then(() => page.scrapeAll(initial, limit));
+  }
 
   fit('get the details from the website', () => {
     const startTime = new Date().getTime();
@@ -15,10 +25,6 @@ describe('real state information', function() {
           console.log("scraped id:", prospect.id);
           return Object.assign(prospect, details);
         });
-    }
-
-    function scrapeSearch(search, initial) {
-      return search().then(pages.grid.init).then(() => pages.grid.scrapeAll(initial));
     }
 
     function saveAllResults(results) {
@@ -37,9 +43,8 @@ describe('real state information', function() {
 
     //saveAllResults(require("../" + SCRAPED_GRID_FILE)).catch((e) => console.log(e));
 
-
-    scrapeSearch(pages.search.searchForCommercialPlexes)
-      .then((commercial) => scrapeSearch(pages.search.searchForResidentialPlexes, commercial))
+    scrapeSearch(pages.search.searchForCommercialPlexes, pages.grid, [], MAX_GRID_RESULTS)
+      .then((commercial) => scrapeSearch(pages.search.searchForResidentialPlexes, pages.grid, commercial, MAX_GRID_RESULTS))
       .then((results) => {
         const writer = fs.createWriteStream(SCRAPED_GRID_FILE);
         writer.write(JSON.stringify(results, null, 2))
@@ -68,10 +73,7 @@ describe('real state information', function() {
 
   it('get the details from the matrix', () => {
 
-    pages.search.searchForCommercialPlexes()
-      .then(pages.details.first)
-      .then(pages.details.init)
-      .then(pages.details.scrapeAll)
+    scrapeSearch(pages.search.searchForCommercialPlexes, pages.details, [], MAX_DETAILS_RESULTS)
       .then((results) => {
         const writer = fs.createWriteStream(SCRAPED_DETAILS_FILE);
         writer.write(JSON.stringify(results, null, 2))
