@@ -11,11 +11,7 @@ const pageDetails = {
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
   first: () => waitAndClick(selectors.BUTTON_SUMMARY_TAB),
   scrape: (url) => browser.get(url).then(pageDetails.init).then(utils.scrape),
-  next: () => {
-    return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
-      .then(utils.waitPageLoaded)
-      .then(this.init); // waits so the ajax call has time to come back.
-  },
+  next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY),
   getStatus: () => {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((t) => utils.formatters.arrayOfInts(t.replace(",", "")));

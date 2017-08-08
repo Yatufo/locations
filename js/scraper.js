@@ -21,7 +21,7 @@ describe('real state information', function() {
     return require("../" + dataPath);
   }
 
-  it('get the details from the website', () => {
+  it('get the grid', () => {
     const startTime = new Date().getTime();
 
     function scrapeDetails(prospect) {
@@ -48,7 +48,7 @@ describe('real state information', function() {
 
   });
 
-  it('get the details from the matrix', () => {
+  it('get the matrix', () => {
     const search = () => Promise.resolve(); // do nothing before.
     scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
       .then((results) => {
@@ -60,7 +60,7 @@ describe('real state information', function() {
 
   });
 
-  it('get the details from the matrix', () => {
+  it('get the details', () => {
 
     //TODO: Reuse multiple calls
     scrapeSearch(pages.search.searchForCommercialPlexes, pages.details, [], MAX_DETAILS_RESULTS)
