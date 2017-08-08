@@ -78,5 +78,5 @@ module.exports = () => {
     commercial: numbersFound[1] ? parseInt(numbersFound[1]) : 0
   }
 
-  return details;
+  return [details];
 };

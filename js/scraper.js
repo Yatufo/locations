@@ -4,8 +4,6 @@ const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/updates.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
 
-const scrapedWriter = fs.createWriteStream(SCRAPED_DETAILS_FILE);
-
 describe('real state information', function() {
 
   fit('get the details from the website', () => {
@@ -31,7 +29,10 @@ describe('real state information', function() {
 
       return Promise.all(resultsToUpdate.map(scrapeDetails))
         .then((resultsUpdated) => resultsReady.concat(resultsUpdated))
-        .then((resultsWithDetails) => scrapedWriter.write(JSON.stringify(resultsWithDetails, null, 2)));
+        .then((resultsWithDetails) => {
+          const writer = fs.createWriteStream(SCRAPED_DETAILS_FILE);
+          writer.write(JSON.stringify(resultsWithDetails, null, 2))
+        });
     }
 
     //saveAllResults(require("../" + SCRAPED_GRID_FILE)).catch((e) => console.log(e));
@@ -64,6 +65,22 @@ describe('real state information', function() {
       .catch((e) => console.log(e));
 
   });
+
+  it('get the details from the matrix', () => {
+
+    pages.search.searchForCommercialPlexes()
+      .then(pages.details.first)
+      .then(pages.details.init)
+      .then(pages.details.scrapeAll)
+      .then((results) => {
+        const writer = fs.createWriteStream(SCRAPED_DETAILS_FILE);
+        writer.write(JSON.stringify(results, null, 2))
+      })
+      .then(() => console.log("Finished!!"))
+      .catch((e) => console.log(e));
+
+  });
+
 
 
 });

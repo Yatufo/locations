@@ -8,7 +8,6 @@ const selectors = {
   BUTTON_SEARCH: '#submit-search',
   SELECTOR_ORDER: '#selectSortById',
   SELECT_RECENT: '#selectSortById > div.dropdown.active > ul > li:nth-child(4)',
-  BUTTON_SUMMARY_TAB: '#ButtonViewSummary',
   BUTTON_NEXT_SUMMARY: '#divWrapperPager > ul > li.next',
   LABEL_PAGE_STATUS: '#divWrapperPager > ul > li.pager-current'
 };
