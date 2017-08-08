@@ -9,6 +9,7 @@ const MAX_DETAILS_RESULTS = 5;
 const MAX_EXTRAS_RESULTS = 5;
 
 describe('real state information', function() {
+  const startTime = new Date().getTime();
 
   function scrapeSearch(search, page, initial, limit) {
     return search()
@@ -22,7 +23,6 @@ describe('real state information', function() {
   }
 
   it('get the grid', () => {
-    const startTime = new Date().getTime();
 
     function scrapeDetails(prospect) {
       return pages.details.scrape(prospect.url)
@@ -86,6 +86,7 @@ describe('real state information', function() {
     getJson(SCRAPED_EXTRAS_FILE).forEach((item) => extras[item.id] = item);
 
     const updates = getJson(SCRAPED_GRID_FILE).map((g) => {
+      g.timestamp = startTime;
       return Object.assign(g, details[g.id] || {}, extras[g.id] || {});
     });
 
