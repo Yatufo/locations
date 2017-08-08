@@ -32,5 +32,7 @@ sed -e "s/$CURRENT_LABELS/$NEW_LABELS/" data/prospects.csv > data/prospects-labe
 echo 5. Cleaning up
 mv data/updates.json data/results/updates-$(date +%F).json
 mv data/grid.json data/results/grid-$(date +%F).json
+mv data/extras.json data/results/extras-$(date +%F).json
+mv data/details.json data/results/details-$(date +%F).json
 rm data/prospects.csv
 mv data/prospects-labels.csv data/results/prospects-$(date +%F).csv

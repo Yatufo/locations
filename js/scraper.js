@@ -1,5 +1,6 @@
 const pages = require('./pages/Pages.js');
 const fs = require('fs');
+const SCRAPED_UPDATES_FILE = "./data/updates.json";
 const SCRAPED_GRID_FILE = "./data/grid.json";
 const SCRAPED_DETAILS_FILE = "./data/details.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
@@ -14,6 +15,10 @@ describe('real state information', function() {
       .then(page.first)
       .then(page.init)
       .then(() => page.scrapeAll(initial, limit));
+  }
+
+  function getJson(dataPath) {
+    return require("../" + dataPath);
   }
 
   it('get the details from the website', () => {
@@ -44,10 +49,8 @@ describe('real state information', function() {
   });
 
   it('get the details from the matrix', () => {
-
-    pages.matrix.first()
-      .then(pages.matrix.init)
-      .then(() => pages.matrix.scrapeAll([], MAX_EXTRAS_RESULTS))
+    const search = () => Promise.resolve(); // do nothing before.
+    scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
       .then((results) => {
         const writer = fs.createWriteStream(SCRAPED_EXTRAS_FILE);
         writer.write(JSON.stringify(results, null, 2))
@@ -74,6 +77,21 @@ describe('real state information', function() {
 
   });
 
+
+  afterAll(() => {
+    const grid = getJson(SCRAPED_GRID_FILE);
+    const details = {}, extras = {};
+
+    getJson(SCRAPED_DETAILS_FILE).forEach((item) => details[item.id] = item);
+    getJson(SCRAPED_EXTRAS_FILE).forEach((item) => extras[item.id] = item);
+
+    const updates = getJson(SCRAPED_GRID_FILE).map((g) => {
+      return Object.assign(g, details[g.id] || {}, extras[g.id] || {});
+    });
+
+    const writer = fs.createWriteStream(SCRAPED_UPDATES_FILE);
+    writer.write(JSON.stringify(updates, null, 2))
+  });
 
 
 });
