@@ -11,7 +11,7 @@ const pageDetails = {
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
   first: () => waitAndClick(selectors.BUTTON_SUMMARY_TAB),
   scrape: (url) => browser.get(url).then(pageDetails.init).then(utils.scrape),
-  next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY),
+  next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY).then(() => browser.driver.sleep(300)),
   getStatus: () => {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((t) => utils.formatters.arrayOfInts(t.replace(",", "")));

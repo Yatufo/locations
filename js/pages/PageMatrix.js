@@ -20,7 +20,7 @@ const matrixPage = {
     return browser.get(browser.params.matrixUrl)
     .then(() => waitAndClick(selectors.FIRST_PROSPECT_LINK));
   },
-  next: () => waitAndClick(selectors.BUTTON_NEXT_SUMMARY),
+  next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY).then(() => browser.driver.sleep(300)),
   getStatus: () => {
     return element(by.css(selectors.LABEL_PAGE_STATUS)).element(by.xpath(".."))
     .getText().then(utils.formatters.arrayOfInts);

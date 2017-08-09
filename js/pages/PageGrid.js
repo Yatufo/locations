@@ -10,11 +10,7 @@ const selectors = {
 
 const gridPage = {
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
-  next: () => {
-    return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
-      .then(utils.waitPageLoaded)
-      .then(this.init); // waits so the ajax call has time to come back.
-  },
+  next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY).then(() => browser.driver.sleep(300)),
   getStatus: () => {
     return element.all(by.css(selectors.LABEL_PAGE_STATUS)).first().getText()
       .then((text) => text.split('/').map((s) => parseInt(s)));

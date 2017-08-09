@@ -31,14 +31,18 @@ const utils = {
         window.scrape = eval(arguments[0]);
       }, scrapeDefinition.toString())
       .then(() => {
-        return browser.driver.sleep(2000);
+        return browser.driver.sleep(3000);
       });
   },
   waitPageLoaded: () => {
     return browser.driver.sleep(500);
   },
   scrapeCurrent: () => {
-    return browser.executeScript("return scrape();");
+    return browser.executeScript("return scrape();")
+    .catch((e) => {
+      console.log("Retrying scraping after error: ", e.message);
+      return browser.driver.sleep(500).then(utils.scrapeCurrent)
+    });
   },
   scrapeAll: scrapeAll
 }
