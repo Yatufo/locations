@@ -1,21 +1,5 @@
 module.exports = () => {
 
-  //TODO: Remove duplication by loading all scrapers via the browser like with artoo.
-  const formatters = {
-    arrayOfFloat: (text) => {
-      const floatPattern = /\d+\,?\d+/g;
-      return (text.replace(/\s/g, "").replace(",", "").match(floatPattern) || []).map((t) => parseInt(t));
-    },
-    numberOnly: (text) => {
-      const [first] = formatters.arrayOfFloat(text);
-      return first || null;
-    },
-    dimensions: (text) => {
-      const [width, depth] = formatters.arrayOfFloat(text);
-      return { 'width' : width, 'depth': depth};
-    }
-  }
-
   const scrapeDetailsSchema = {
     id : () => getValueFor("Centris® No."),
     taxMunicipal: () => getValueFor("Municipal Taxes", formatters.numberOnly),

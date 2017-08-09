@@ -1,35 +1,40 @@
-const formatters = {
-  arrayOfThings: (text, pattern) => {
-    return text.replace(/\s/g, "").replace(",", "").match(pattern) || [];
-  },
-  arrayOfFloat: (text) => {
-    const floatPattern = /\d+\.?\d+/g;
-    return formatters.arrayOfThings(text, floatPattern).map((t) => parseFloat(t));
-  },
-  arrayOfInts: (text) => {
-    const intPatttern = /\d+/g;
-    return formatters.arrayOfThings(text, intPatttern).map((t) => parseInt(t));
-  },
-  numberOnly: (text) => {
-    const [first] = formatters.arrayOfFloat(text);
-    return first || null;
-  },
-  dimensions: (text) => {
-    const [width, length] = formatters.arrayOfFloat(text);
-    return {
-      width: width,
-      length: length
-    };
-  }
+const formattersDefinition = () => {
+  const formatters = {
+    arrayOfThings: (text, pattern) => {
+      return text.replace(/\s/g, "").replace(",", "").match(pattern) || [];
+    },
+    arrayOfFloat: (text) => {
+      const floatPattern = /\d+\.?\d+/g;
+      return formatters.arrayOfThings(text, floatPattern).map((t) => parseFloat(t));
+    },
+    arrayOfInts: (text) => {
+      const intPatttern = /\d+/g;
+      return formatters.arrayOfThings(text, intPatttern).map((t) => parseInt(t));
+    },
+    numberOnly: (text) => {
+      const [first] = formatters.arrayOfFloat(text);
+      return first || null;
+    },
+    dimensions: (text) => {
+      const [width, length] = formatters.arrayOfFloat(text);
+      return {
+        width: width,
+        length: length
+      };
+    }
+  };
+  return formatters;
 }
 
 const utils = {
-  formatters: formatters,
+  formatters: formattersDefinition(),
   loadScraper: (scrapeDefinition) => {
     return browser.executeScript(() => {
         $('head').append("<script async='false' type='text/javascript' src='https://medialab.github.io/artoo/public/dist/artoo-latest.min.js'/>");
-        window.scrape = eval(arguments[0]);
-      }, scrapeDefinition.toString())
+        const [scrapeString, formattersString] = arguments;
+        window.scrape = eval(scrapeString);
+        window.formatters = eval(formattersString)();
+      }, scrapeDefinition.toString(), formattersDefinition.toString())
       .then(() => {
         return browser.driver.sleep(3000);
       });
@@ -39,10 +44,10 @@ const utils = {
   },
   scrapeCurrent: () => {
     return browser.executeScript("return scrape();")
-    .catch((e) => {
-      console.log("Retrying scraping after error: ", e.message);
-      return browser.driver.sleep(500).then(utils.scrapeCurrent)
-    });
+      .catch((e) => {
+        console.log("Retrying scraping after error: ", e.message);
+        return browser.driver.sleep(1000).then(utils.scrapeCurrent)
+      });
   },
   scrapeAll: scrapeAll
 }
@@ -81,10 +86,10 @@ function scrapeAll(page, cumulative, limit, currentFirstId) {
 
       let result = Promise.resolve(cumulative);
 
-      if (isProcessed && !isFinished){
+      if (isProcessed && !isFinished) {
         const [first] = partial;
         result = page.next().then(() => scrapeAll(page, cumulative, limit, first.id))
-      } else if (!isProcessed){
+      } else if (!isProcessed) {
         result = scrapeAll(page, cumulative, limit, currentFirstId)
       }
 

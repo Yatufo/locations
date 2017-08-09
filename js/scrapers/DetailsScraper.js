@@ -1,19 +1,5 @@
 module.exports = () => {
-  const floatPattern = /\d+\.?\d+/g;
-  const formatters = {
-    arrayOfFloat: (text) => {
-      return (text.replace(/\s/g, "").replace(",", "").match(floatPattern) || []).map((t) => parseInt(t));
-    },
-    numberOnly: (text) => {
-      const [first] = formatters.arrayOfFloat(text);
-      return first || null;
-    },
-    dimensions: (text) => {
-      const [width, length] = formatters.arrayOfFloat(text);
-      return { width: width, length: length};
-    }
-  }
-
+  
   const scrapeDetailsSchema = {
     id: () => {
       return $('#MlsNumber').text();
