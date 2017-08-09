@@ -88,8 +88,6 @@ describe('real state information', function() {
 
     const updates = getJson(SCRAPED_GRID_FILE).map((g) => {
       g.timestamp = startTime;
-      g.price = parseInt(g.price);
-
       return Object.assign(g, details[g.id] || {}, extras[g.id] || {});
     });
 

@@ -1,5 +1,5 @@
 module.exports = () => {
-  
+
   const scrapeDetailsSchema = {
     id: () => {
       return $('#MlsNumber').text();
@@ -28,13 +28,12 @@ module.exports = () => {
     mainUnit: getRowSelector("Main unit"),
     features: getRowSelector("Additional features"),
     location: () => {
-      const pattern = /-?\d+\.\d+/g;
       const mapUrl = $('li.onmap a').attr('onclick');
       if (mapUrl) {
-        const coords = mapUrl.match(pattern) || {};
+        const [z, lat, lon] = formatters.arrayOfFloat(mapUrl);
         return {
           type: "Point",
-          coordinates: [parseFloat(coords[0]), parseFloat(coords[1])]
+          coordinates: [lat, lon]
         }
       }
       return {};

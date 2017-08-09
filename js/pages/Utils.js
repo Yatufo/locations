@@ -4,7 +4,7 @@ const formattersDefinition = () => {
       return text.replace(/\s/g, "").replace(",", "").match(pattern) || [];
     },
     arrayOfFloat: (text) => {
-      const floatPattern = /\d+\.?\d+/g;
+      const floatPattern = /-?\d+\.?\d+/g;
       return formatters.arrayOfThings(text, floatPattern).map((t) => parseFloat(t));
     },
     arrayOfInts: (text) => {
@@ -80,8 +80,8 @@ function scrapeAll(page, cumulative, limit, currentFirstId) {
   return Promise.all([utils.scrapeCurrent(), page.getStatus()])
     .then(([partial, status]) => {
       const [current, total] = status;
-      const isFinished = current == total || (limit && cumulative.length >= limit);
       const isProcessed = processInfo(partial, cumulative, currentFirstId);
+      const isFinished = current == total || (limit && cumulative.length >= limit);
       console.log("status: ", current, ' / ', total);
 
       let result = Promise.resolve(cumulative);
