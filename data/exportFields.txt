@@ -1,11 +1,12 @@
 location.coordinates.1
 location.coordinates.0
-id
 price
+id
 revenue
-calculated.ratio
 url
 residentialUnits
 score
 timestamp
 calculated.recent
+calculated.capRate
+calculated.yield
