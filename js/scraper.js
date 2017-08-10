@@ -22,6 +22,14 @@ describe('real state information', function() {
     return require("../" + dataPath);
   }
 
+  function saveResults(results, fileName) {
+    const writer = fs.createWriteStream(fileName);
+    return new Promise((resolve, reject) => {
+      const done = (e) => e ? reject(e) : resolve();
+      writer.write(JSON.stringify(results, null, 2), done);
+    });
+  }
+
   it('get the grid', () => {
 
     function scrapeDetails(prospect) {
@@ -37,11 +45,7 @@ describe('real state information', function() {
         const limit = commercial.length + MAX_GRID_RESULTS;
         return scrapeSearch(pages.search.searchForResidentialPlexes, pages.grid, commercial, limit)
       })
-      .then((results) => {
-        const writer = fs.createWriteStream(SCRAPED_GRID_FILE);
-        writer.write(JSON.stringify(results, null, 2))
-        return results;
-      })
+      .then((results) => saveResults(results, SCRAPED_GRID_FILE))
       .then((e) => console.log("Finished grid!!"))
       .catch((e) => console.log(e));
 
@@ -51,10 +55,7 @@ describe('real state information', function() {
   it('get the matrix', () => {
     const search = () => Promise.resolve(); // do nothing before.
     scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
-      .then((results) => {
-        const writer = fs.createWriteStream(SCRAPED_EXTRAS_FILE);
-        writer.write(JSON.stringify(results, null, 2))
-      })
+      .then((results) => saveResults(results, SCRAPED_EXTRAS_FILE))
       .then(() => console.log("Finished extras!!"))
       .catch((e) => console.log(e));
 
@@ -64,14 +65,11 @@ describe('real state information', function() {
 
     //TODO: Reuse multiple calls
     scrapeSearch(pages.search.searchForCommercialPlexes, pages.details, [], MAX_DETAILS_RESULTS)
-      .then((commercial) =>{
+      .then((commercial) => {
         const limit = commercial.length + MAX_DETAILS_RESULTS;
         return scrapeSearch(pages.search.searchForResidentialPlexes, pages.details, commercial, limit)
       })
-      .then((results) => {
-        const writer = fs.createWriteStream(SCRAPED_DETAILS_FILE);
-        writer.write(JSON.stringify(results, null, 2))
-      })
+      .then((results) => saveResults(results, SCRAPED_DETAILS_FILE))
       .then(() => console.log("Finished details!!"))
       .catch((e) => console.log(e));
 
@@ -86,13 +84,12 @@ describe('real state information', function() {
     getJson(SCRAPED_DETAILS_FILE).forEach((item) => details[item.id] = item);
     getJson(SCRAPED_EXTRAS_FILE).forEach((item) => extras[item.id] = item);
 
-    const updates = getJson(SCRAPED_GRID_FILE).map((g) => {
+    const results = getJson(SCRAPED_GRID_FILE).map((g) => {
       g.timestamp = startTime;
       return Object.assign(g, details[g.id] || {}, extras[g.id] || {});
     });
 
-    const writer = fs.createWriteStream(SCRAPED_UPDATES_FILE);
-    writer.write(JSON.stringify(updates, null, 2))
+    saveResults(results, SCRAPED_UPDATES_FILE);
   });
 
 
