@@ -4,7 +4,7 @@ const formattersDefinition = () => {
       return text.replace(/\s/g, "").replace(",", "").match(pattern) || [];
     },
     arrayOfFloat: (text) => {
-      const floatPattern = /-?\d+\.?\d+/g;
+      const floatPattern = /-?\d+(\,|\.)?\d+/g;
       return formatters.arrayOfThings(text, floatPattern).map((t) => parseFloat(t));
     },
     arrayOfInts: (text) => {
