@@ -8,7 +8,7 @@ const SCRAPED_RMAX_FILE = "./data/rmax.json";
 const MAX_GRID_RESULTS = false;
 const MAX_DETAILS_RESULTS = 10;
 const MAX_EXTRAS_RESULTS = 10;
-const MAX_RMAX_RESULTS = 10;
+const MAX_RMAX_RESULTS = false;
 
 describe('real state information', function() {
   const startTime = new Date().getTime();
@@ -20,8 +20,10 @@ describe('real state information', function() {
       .then(() => page.scrapeAll(initial, limit));
   }
 
-  function getJson(dataPath) {
-    return require("../" + dataPath);
+  function getJsonMap(dataPath) {
+    const result = {};
+    require("../" + dataPath).forEach((item) => result[item.id] = item)
+    return result;
   }
 
   function saveResults(results, fileName) {
@@ -77,7 +79,7 @@ describe('real state information', function() {
 
   });
 
-  it('get the rmaxs', () => {
+  fit('get the rmaxs', () => {
 
     scrapeSearch(pages.rmax.search, pages.rmax, [], MAX_RMAX_RESULTS)
     .then((results) => saveResults(results, SCRAPED_RMAX_FILE))
@@ -89,15 +91,14 @@ describe('real state information', function() {
   //fit('extra test', () => {});
 
   afterAll(() => {
-    const grid = getJson(SCRAPED_GRID_FILE);
-    const details = {}, extras = {};
+    const grid = Object.values(getJsonMap(SCRAPED_GRID_FILE));
+    const details = getJsonMap(SCRAPED_DETAILS_FILE);
+    const extras = getJsonMap(SCRAPED_EXTRAS_FILE)
+    const rmaxs = getJsonMap(SCRAPED_RMAX_FILE);
 
-    getJson(SCRAPED_DETAILS_FILE).forEach((item) => details[item.id] = item);
-    getJson(SCRAPED_EXTRAS_FILE).forEach((item) => extras[item.id] = item);
-
-    const results = getJson(SCRAPED_GRID_FILE).map((g) => {
+    const results = grid.map((g) => {
       g.timestamp = startTime;
-      return Object.assign(g, details[g.id] || {}, extras[g.id] || {});
+      return Object.assign(g, details[g.id] || {}, rmaxs[g.id] || {}, extras[g.id] || {});
     });
 
     saveResults(results, SCRAPED_UPDATES_FILE);
