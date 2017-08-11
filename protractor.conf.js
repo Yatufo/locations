@@ -2,7 +2,8 @@ var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
   params: {
-    matrixUrl: "http://matrix.centris.ca/Matrix/Public/Portal.aspx?ID=1-1123550629-11&L=1"
+    matrixUrl: "http://matrix.centris.ca/Matrix/Public/Portal.aspx?ID=1-1123550629-11&L=1",
+    rmaxUrl: "http://www.remax-quebec.com/en/recherche/residentielle/index.rmx"
   },
   specs: ['js/scraper.js'],
   capabilities: {
