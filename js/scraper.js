@@ -8,7 +8,7 @@ const SCRAPED_RMAX_FILE = "./data/rmax.json";
 const MAX_GRID_RESULTS = false;
 const MAX_DETAILS_RESULTS = 10;
 const MAX_EXTRAS_RESULTS = 10;
-const MAX_RMAX_RESULTS = false;
+const MAX_RMAX_RESULTS = 10;
 
 describe('real state information', function() {
   const startTime = new Date().getTime();
@@ -79,7 +79,7 @@ describe('real state information', function() {
 
   });
 
-  fit('get the rmaxs', () => {
+  it('get the rmaxs', () => {
 
     scrapeSearch(pages.rmax.search, pages.rmax, [], MAX_RMAX_RESULTS)
     .then((results) => saveResults(results, SCRAPED_RMAX_FILE))

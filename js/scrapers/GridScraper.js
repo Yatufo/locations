@@ -11,8 +11,8 @@ module.exports = () => {
        sel : 'div.thumbnail > a',
        attr : 'href'
     },
-    price: () => {
-      return parseInt($('div.description p.price span:nth-child(2)').attr('content'));
+    price: function(){
+      return formatters.numberOnly($(this).find('p.price').text().replace(",",""));
     },
     updated: {
       sel : 'div.banner.new-property, div.banner.new-price',
