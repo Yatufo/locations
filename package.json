@@ -1,9 +1,11 @@
 {
-    "name": "realstate",
-    "version": "0.0.1",
-    "dependencies": {
-        "artoo-js": "^0.3.4",
-        "sandcrawler": "beta",
-        "protractor-html-screenshot-reporter": "latest"
-    }
+  "name": "realstate",
+  "version": "0.0.1",
+  "dependencies": {
+    "artoo-js": "^0.3.4",
+    "sandcrawler": "beta"
+  },
+  "devDependencies": {
+    "protractor-jasmine2-screenshot-reporter": "^0.4.0"
+  }
 }

@@ -45,7 +45,7 @@ const utils = {
         window.formatters = eval(formattersString)();
       }, scrapeDefinition.toString(), formattersDefinition.toString())
       .then(() => {
-        return browser.driver.sleep(3000);
+        return browser.driver.sleep(4000);
       });
   },
   waitPageLoaded: () => {

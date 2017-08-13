@@ -1,4 +1,9 @@
-var HtmlReporter = require('protractor-html-screenshot-reporter');
+var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
+
+var reporter = new HtmlScreenshotReporter({
+  dest: 'target/screenshots',
+  filename: 'my-report.html'
+});
 
 exports.config = {
   params: {
@@ -27,17 +32,15 @@ exports.config = {
     browser.driver.manage().window().maximize();
 
     // Add a screenshot reporter and store screenshots to `/tmp/screnshots`:
-    jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: '/tmp/screenshots'
-    }));
+    jasmine.getEnv().addReporter(reporter);
 
 
-    browser.ignoreSynchronization=true;  // or false
+    browser.ignoreSynchronization = true; // or false
     global.EC = protractor.ExpectedConditions;
 
 
     function toElement(selector) {
-      if (typeof selector === 'string' || selector instanceof String){
+      if (typeof selector === 'string' || selector instanceof String) {
         return element.all(by.css(selector)).first();
       }
       return selector;
@@ -55,5 +58,16 @@ exports.config = {
       return waitFor(e, timeout).then(e.click);
     }
   },
-
+  // Setup the report before any tests start
+  beforeLaunch: function() {
+    return new Promise(function(resolve) {
+      reporter.beforeLaunch(resolve);
+    });
+  },
+  // Close the report after all tests finish
+  afterLaunch: function(exitCode) {
+    return new Promise(function(resolve) {
+      reporter.afterLaunch(resolve.bind(this, exitCode));
+    });
+  }
 };
