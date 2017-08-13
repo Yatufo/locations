@@ -51,6 +51,8 @@ exports.config = {
       return browser.wait(EC.elementToBeClickable(e), timeout || 5000);
     }
 
+    global.toElement = toElement;
+
     global.waitFor = waitFor;
 
     global.waitAndClick = (selector, timeout) => {

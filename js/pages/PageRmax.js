@@ -13,6 +13,7 @@ const selectors = {
   SELECT_GRAND_MONTREAL: dropItemByName('Greater Montréal'),
   BUTTON_FIND: element(by.buttonText('Find.')),
   FIRST_PROSPECT_LINK: "a.property-details",
+  LABEL_TOTAL_RESULTS: element(by.css("p.properties-total")),
   BUTTON_NEXT_SUMMARY: element.all(by.linkText('Next Result')).first()
 };
 
@@ -30,24 +31,28 @@ function search() {
 };
 
 let counter = 1;
-const MAX_SEARCH_RESULTS = 500;
+let totalResults = 0;
+const MAX_REMAX_SEARCH_RESULTS = 500;
 
 const rmaxPage = {
   search: search,
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
-  first: () => waitAndClick(selectors.FIRST_PROSPECT_LINK),
+  first: () => {
+    //gets the total results before going to the first details page
+    selectors.LABEL_TOTAL_RESULTS.getText()
+    .then((text) => {
+      const n = utils.formatters.numberOnly(text)
+      totalResults = n > MAX_REMAX_SEARCH_RESULTS ? MAX_REMAX_SEARCH_RESULTS : n;
+    })
+
+    return waitAndClick(selectors.FIRST_PROSPECT_LINK);
+  },
   next: () => {
     counter++;
     return waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
-    .then(rmaxPage.init)
+      .then(rmaxPage.init)
   },
-  getStatus: () => {
-     // If it does not find the next button it means it reached the end.
-    return new Promise((resolve, reject) => {
-      waitAndClick(selectors.BUTTON_NEXT_SUMMARY)
-        .then(() => resolve([counter, MAX_SEARCH_RESULTS]))
-    })
-  },
+  getStatus: () => Promise.resolve([counter, totalResults]),
   scrapeAll: (initial, limit) => {
     counter = 1;
     return utils.scrapeAll(rmaxPage, initial, limit)
