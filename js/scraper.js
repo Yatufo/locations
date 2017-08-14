@@ -6,9 +6,9 @@ const SCRAPED_DETAILS_FILE = "./data/details.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
 const SCRAPED_RMAX_FILE = "./data/rmax.json";
 const MAX_GRID_RESULTS = false;
-const MAX_DETAILS_RESULTS = 10;
+const MAX_DETAILS_RESULTS = 100;
 const MAX_EXTRAS_RESULTS = 10;
-const MAX_RMAX_RESULTS = 10;
+const MAX_RMAX_RESULTS = 100;
 
 describe('real state information', function() {
   const startTime = new Date().getTime();

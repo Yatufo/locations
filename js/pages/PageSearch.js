@@ -1,3 +1,5 @@
+const utils = require('./Utils.js')
+
 const selectors = {
   CHANGE_LANGUAGE: '#header-wrapper > div.top-nav > nav > ul.right-menu > li:nth-child(3) > a',
   BUTTON_CRITERIAS: '#btn-advanced-criterias',
@@ -20,6 +22,7 @@ function searchForResidentialPlexes (){
     .then(() => waitAndClick(selectors.BUTTON_SEARCH)) // search
     .then(() => waitAndClick(selectors.SELECTOR_ORDER)) // select order by more recent first
     .then(() => waitAndClick(selectors.SELECT_RECENT)) // order by the most recent first
+    .then(utils.waitPageLoaded)
 };
 
 function searchForCommercialPlexes(){
@@ -30,6 +33,7 @@ function searchForCommercialPlexes(){
     .then(() => waitAndClick(selectors.BUTTON_SEARCH))
     .then(() => waitAndClick(selectors.SELECTOR_ORDER)) // select order by more recent first
     .then(() => waitAndClick(selectors.SELECT_RECENT)) // order by the most recent first
+    .then(utils.waitPageLoaded)
 };
 
 
