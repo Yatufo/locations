@@ -6,7 +6,7 @@ revenue
 url
 residentialUnits
 score
-timestamp
+calculated.sinceInDays
 calculated.recent
 calculated.capRate
 calculated.yield
