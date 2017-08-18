@@ -1,4 +1,5 @@
 const pages = require('./pages/Pages.js');
+const _ = require('lodash');
 const fs = require('fs');
 const SCRAPED_UPDATES_FILE = "./data/updates.json";
 const SCRAPED_GRID_FILE = "./data/grid.json";
@@ -99,7 +100,7 @@ describe('real state information', function() {
     const results = grid.map((g) => {
       g.timestamp = startTime;
       g.recent = g.updated;
-      g.updated = g.recent || details[g.id] || rmaxs[g.id] || extras[g.id];
+      g.updated = g.recent || _.isObject(details[g.id])  || _.isObject(rmaxs[g.id]) || _.isObject(extras[g.id]);
       return Object.assign(g, details[g.id] || {}, rmaxs[g.id] || {}, extras[g.id] || {});
     });
 

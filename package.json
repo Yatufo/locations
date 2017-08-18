@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "artoo-js": "^0.3.4",
+    "lodash": "^4.17.4",
     "sandcrawler": "beta"
   },
   "devDependencies": {
