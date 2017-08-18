@@ -1,8 +1,8 @@
 #! /bin/sh
 
-#with docker: ./protractor-headless.sh protractor.conf.js
 echo 1. Running the scraper:
 protractor protractor.conf.js
+#./protractor-headless.sh protractor.conf.js
 
 echo 2.1 Start mongo in case is not running
 docker start centrisdb

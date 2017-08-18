@@ -6,9 +6,9 @@ const SCRAPED_DETAILS_FILE = "./data/details.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
 const SCRAPED_RMAX_FILE = "./data/rmax.json";
 const MAX_GRID_RESULTS = false;
-const MAX_DETAILS_RESULTS = false;
+const MAX_DETAILS_RESULTS = 200;
 const MAX_EXTRAS_RESULTS = 10;
-const MAX_RMAX_RESULTS = false;
+const MAX_RMAX_RESULTS = 50;
 
 describe('real state information', function() {
   const startTime = new Date().getTime();
@@ -51,7 +51,7 @@ describe('real state information', function() {
       })
       .then((results) => saveResults(results, SCRAPED_GRID_FILE))
       .then((e) => console.log("Finished grid!!"))
-      .catch((e) => console.log(e));
+      .catch(console.log);
 
 
   });
@@ -61,7 +61,7 @@ describe('real state information', function() {
     scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
       .then((results) => saveResults(results, SCRAPED_EXTRAS_FILE))
       .then(() => console.log("Finished extras!!"))
-      .catch((e) => console.log(e));
+      .catch(console.log);
 
   });
 
@@ -75,7 +75,7 @@ describe('real state information', function() {
       })
       .then((results) => saveResults(results, SCRAPED_DETAILS_FILE))
       .then(() => console.log("Finished details!!"))
-      .catch((e) => console.log(e));
+      .catch(console.log);
 
   });
 
@@ -84,7 +84,7 @@ describe('real state information', function() {
     scrapeSearch(pages.rmax.search, pages.rmax, [], MAX_RMAX_RESULTS)
     .then((results) => saveResults(results, SCRAPED_RMAX_FILE))
     .then(() => console.log("Finished rmax!!"))
-    .catch((e) => console.log(e));
+    .catch(console.log);
 
   });
 

@@ -1,39 +1,4 @@
-const formattersDefinition = () => {
-  const formatters = {
-    arrayOfThings: (text, pattern) => {
-      return text.replace(/\s/g, "").replace(",", "").match(pattern) || [];
-    },
-    arrayOfFloat: (text) => {
-      const floatPattern = /-?\d+(\,|\.)?\d+/g;
-      return formatters.arrayOfThings(text, floatPattern).map((t) => parseFloat(t));
-    },
-    // Converts the values coming as 1'2" 1 feet 2 inches to it's feet value.
-    arrayOfFeet: (text) => {
-      const feetInchesPattern = /-?\d+\'(\d+\")?/g;
-      const feetInches = formatters.arrayOfThings(text, feetInchesPattern);
-      return feetInches.map((fi) => {
-        const [feets, inches] = formatters.arrayOfInts(fi);
-        return feets + (inches ? inches * 0.083 : 0);
-      })
-    },
-    arrayOfInts: (text) => {
-      const intPatttern = /\d+/g;
-      return formatters.arrayOfThings(text, intPatttern).map((t) => parseInt(t));
-    },
-    numberOnly: (text) => {
-      const [first] = formatters.arrayOfFloat(text);
-      return first || null;
-    },
-    dimensions: (text) => {
-      const [width, length] = formatters.arrayOfFloat(text);
-      return {
-        width: width,
-        length: length
-      };
-    }
-  };
-  return formatters;
-}
+const formattersDefinition = require('./Formatting.js').formattersDefinition
 
 const utils = {
   formatters: formattersDefinition(),
@@ -65,7 +30,6 @@ const utils = {
 function processInfo(partial, cumulative, previousFirstId) {
   const [first] = partial;
   const cumulativeIds = cumulative.map((c) => c.id);
-  const lastPartial = (partial.slice(-1)[0] || {}).id;
   const isNewItems = previousFirstId !== first.id
 
   if (isNewItems) {
@@ -83,11 +47,12 @@ function processInfo(partial, cumulative, previousFirstId) {
   return isNewItems;
 }
 
-const REFRESH_EVERY_TIMES = 300;
+const REFRESH_EVERY_TIMES = 100;
 const refreshPage = (page, amount) => {
   if (amount % REFRESH_EVERY_TIMES === 0) {
     return browser.refresh()
     .then(() => browser.executeScript("window.gc();"))
+    .then(() => browser.driver.sleep(10000))
     .then(page.init)
   }
   return Promise.resolve();

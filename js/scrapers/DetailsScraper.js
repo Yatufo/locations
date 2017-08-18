@@ -48,20 +48,23 @@ module.exports = () => {
     };
   };
 
-  const details = artoo.scrapeOne('#overview div.description', scrapeDetailsSchema);
-  details.score = formatters.numberOnly(details.score);
-  details.area = formatters.numberOnly(details.area);
-  details.revenue = formatters.numberOnly(details.revenue);
-  details.year = formatters.numberOnly(details.year);
-  details.price = formatters.numberOnly(details.price);
+  const details = artoo.scrapeOne('#overview div.description', scrapeDetailsSchema) || {};
+  if (details.id) {
+    details.score = formatters.numberOnly(details.score);
+    details.area = formatters.numberOnly(details.area);
+    details.revenue = formatters.numberOnly(details.revenue);
+    details.year = formatters.numberOnly(details.year);
+    details.price = formatters.numberOnly(details.price);
 
 
-  const integerPattern = /\d+/g;
-  const numbersFound = details.units.match(integerPattern) || [];
-  details.units = {
-    residential: numbersFound[0] ? parseInt(numbersFound[0]) : 0,
-    commercial: numbersFound[1] ? parseInt(numbersFound[1]) : 0
+    const integerPattern = /\d+/g;
+    const numbersFound = details.units.match(integerPattern) || [];
+    details.units = {
+      residential: numbersFound[0] ? parseInt(numbersFound[0]) : 0,
+      commercial: numbersFound[1] ? parseInt(numbersFound[1]) : 0
+    }
+  } else {
+    details.id = "NotFound" + new Date().getTime();
   }
-
   return [details];
 };
