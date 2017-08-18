@@ -18,7 +18,8 @@ function updateDailyVisibility() {
   .forEach(function(updatedEstate){
     var timestamp = new Date(updatedEstate.timestamp);
     var calculated = (updatedEstate.calculated || {})
-    updatedEstate.calculated = Object.assign(calculated, { recent : true, visible : true});
+    var recent = updatedEstate.recent || true;
+    updatedEstate.calculated = Object.assign(calculated, { recent : recent, visible : true});
 
     delete updatedEstate._id
     delete updatedEstate.timestamp

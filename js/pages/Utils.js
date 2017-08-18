@@ -83,6 +83,15 @@ function processInfo(partial, cumulative, previousFirstId) {
   return isNewItems;
 }
 
+const REFRESH_EVERY_TIMES = 300;
+const refreshPage = (page, amount) => {
+  if (amount % REFRESH_EVERY_TIMES === 0) {
+    return browser.refresh()
+    .then(() => browser.executeScript("window.gc();"))
+    .then(page.init)
+  }
+  return Promise.resolve();
+}
 
 function scrapeAll(page, cumulative, limit, currentFirstId) {
   cumulative = cumulative || [];
@@ -97,7 +106,9 @@ function scrapeAll(page, cumulative, limit, currentFirstId) {
 
       if (isProcessed && !isFinished) {
         const [first] = partial;
-        result = page.next().then(() => scrapeAll(page, cumulative, limit, first.id))
+        result = refreshPage(page, current)
+          .then(page.next)
+          .then(() => scrapeAll(page, cumulative, limit, first.id))
       } else if (!isProcessed) {
         result = scrapeAll(page, cumulative, limit, currentFirstId)
       }

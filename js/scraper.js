@@ -6,9 +6,9 @@ const SCRAPED_DETAILS_FILE = "./data/details.json";
 const SCRAPED_EXTRAS_FILE = "./data/extras.json";
 const SCRAPED_RMAX_FILE = "./data/rmax.json";
 const MAX_GRID_RESULTS = false;
-const MAX_DETAILS_RESULTS = 100;
+const MAX_DETAILS_RESULTS = false;
 const MAX_EXTRAS_RESULTS = 10;
-const MAX_RMAX_RESULTS = 100;
+const MAX_RMAX_RESULTS = false;
 
 describe('real state information', function() {
   const startTime = new Date().getTime();
@@ -98,6 +98,8 @@ describe('real state information', function() {
 
     const results = grid.map((g) => {
       g.timestamp = startTime;
+      g.recent = g.updated;
+      g.updated = g.recent || details[g.id] || rmaxs[g.id] || extras[g.id];
       return Object.assign(g, details[g.id] || {}, rmaxs[g.id] || {}, extras[g.id] || {});
     });
 
