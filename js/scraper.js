@@ -36,16 +36,7 @@ describe('real state information', function() {
   }
 
   it('get the grid', () => {
-
-    function scrapeDetails(prospect) {
-      return pages.details.scrape(prospect.url)
-        .then((details) => {
-          console.log("scraped id:", prospect.id);
-          return Object.assign(prospect, details);
-        });
-    }
-
-    scrapeSearch(pages.search.searchForCommercialPlexes, pages.grid, [], MAX_GRID_RESULTS)
+    const result = scrapeSearch(pages.search.searchForCommercialPlexes, pages.grid, [], MAX_GRID_RESULTS)
       .then((commercial) => {
         const limit = commercial.length + MAX_GRID_RESULTS;
         return scrapeSearch(pages.search.searchForResidentialPlexes, pages.grid, commercial, limit)
@@ -54,22 +45,24 @@ describe('real state information', function() {
       .then((e) => console.log("Finished grid!!"))
       .catch(console.log);
 
+      protractor.promise.controlFlow().wait(result);
 
   });
 
   it('get the matrix', () => {
     const search = () => Promise.resolve(); // do nothing before.
-    scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
+    const result = scrapeSearch(search, pages.matrix, [], MAX_EXTRAS_RESULTS)
       .then((results) => saveResults(results, SCRAPED_EXTRAS_FILE))
       .then(() => console.log("Finished extras!!"))
       .catch(console.log);
 
+      protractor.promise.controlFlow().wait(result);
   });
 
   it('get the details', () => {
 
     //TODO: Reuse multiple calls
-    scrapeSearch(pages.search.searchForCommercialPlexes, pages.details, [], MAX_DETAILS_RESULTS)
+    const result = scrapeSearch(pages.search.searchForCommercialPlexes, pages.details, [], MAX_DETAILS_RESULTS)
       .then((commercial) => {
         const limit = commercial.length + MAX_DETAILS_RESULTS;
         return scrapeSearch(pages.search.searchForResidentialPlexes, pages.details, commercial, limit)
@@ -78,15 +71,17 @@ describe('real state information', function() {
       .then(() => console.log("Finished details!!"))
       .catch(console.log);
 
+      protractor.promise.controlFlow().wait(result);
   });
 
   it('get the rmaxs', () => {
 
-    scrapeSearch(pages.rmax.search, pages.rmax, [], MAX_RMAX_RESULTS)
+    const result = scrapeSearch(pages.rmax.search, pages.rmax, [], MAX_RMAX_RESULTS)
     .then((results) => saveResults(results, SCRAPED_RMAX_FILE))
     .then(() => console.log("Finished rmax!!"))
     .catch(console.log);
 
+    protractor.promise.controlFlow().wait(result);
   });
 
   //fit('extra test', () => {});
