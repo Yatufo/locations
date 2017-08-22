@@ -37,7 +37,8 @@ module.exports = () => {
         }
       }
       return {};
-    }
+    },
+    agency: () => $('div.firm span.title').text()
   };
 
 
