@@ -50,9 +50,8 @@ function processInfo(partial, cumulative, previousFirstId) {
 const REFRESH_EVERY_TIMES = 100;
 const refreshPage = (page, amount) => {
   if (amount % REFRESH_EVERY_TIMES === 0) {
-    console.log("Refreshing");
-    return browser.refresh()
-    .then(() => browser.executeScript("window.gc();"))
+    console.log("Collecing garbage");
+    return browser.executeScript("window.gc();")
     .then(() => browser.driver.sleep(10000))
     .then(page.init)
   }
