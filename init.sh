@@ -11,3 +11,4 @@ mongo < ./js/mongo/init.js
 mongo < ./js/mongo/updateEstatesDistances.js
 mongo < ./js/mongo/updateDailyVisibility.js
 mongo < ./js/mongo/updateEstatesDistances.js
+mongo < ./js/mongo/deleteLastBatch.js

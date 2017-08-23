@@ -9,7 +9,7 @@ const selectors = {
 }
 const pageDetails = {
   init: () => utils.waitPageLoaded().then(() => utils.loadScraper(scraper)),
-  first: () => waitAndClick(selectors.BUTTON_SUMMARY_TAB),
+  first: () => waitAndClick(selectors.BUTTON_SUMMARY_TAB).then(() => browser.driver.sleep(300)),
   scrape: (url) => browser.get(url).then(pageDetails.init).then(utils.scrape),
   next: () =>  waitAndClick(selectors.BUTTON_NEXT_SUMMARY).then(() => browser.driver.sleep(300)),
   getStatus: () => {
