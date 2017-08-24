@@ -2,5 +2,5 @@
 node_modules/**
 *.DS_Store
 data/results/*
-data/mongo*
+data/**/*.agz
 target/**

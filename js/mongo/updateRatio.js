@@ -9,7 +9,7 @@ function updateCalculatedRatio() {
 
 
     var cashflow = estate.revenue - taxes - insurance - mortgage;
-    var yyield = Math.round((cashflow * 100)/ estate.price) || -99;
+    var yyield = Number.isInteger(cashflow) ? Math.round((cashflow * 100)/ estate.price) : -99
     var taxRate = (valuation && taxes) ? taxes / valuation : -99;
     var capRate = Math.round((estate.revenue/estate.price) * 100)
     var sinceInDays = Math.round((new Date().getTime() - estate.timestamp) / (24 * 60 * 60 * 1000));
