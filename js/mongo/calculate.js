@@ -1,5 +1,5 @@
 use realestate;
 db.loadServerScripts();
 updateDailyVisibility();
-updateAllEstatesDistances(600);
+updateAllEstatesDistances(800);
 updateCalculatedRatio();

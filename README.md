@@ -14,7 +14,12 @@ Start the runner:
 Ideas:
 Price per ft2
 Average price per ft2 in the area
-Changed price.
+Price vs Valuation.
+Surrondings:
+  estimate taxes
+  comparable properties
+  
+
 
 Where to get the coordinates
 http://www.gps-coordinates.net/

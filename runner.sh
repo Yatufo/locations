@@ -22,9 +22,9 @@ mongoexport --db realestate --collection estates --type=csv \
 --fieldFile data/exportFields.txt --out data/prospects.csv
 
 echo 5. Rename the csv file titles:
-export CURRENT_LABELS=location.coordinates.1,location.coordinates.0,price,id,revenue,url,residentialUnits,score,calculated.sinceInDays,calculated.recent,calculated.capRate,calculated.yield,agency
+export CURRENT_LABELS=location.coordinates.1,location.coordinates.0,price,id,revenue,url,residentialUnits,score,calculated.sinceInDays,calculated.recent,calculated.capRate,calculated.yield
 
-export NEW_LABELS=lon,lat,price,id,revenue,url,residentialUnits,score,sinceInDays,recent,capRate,yield,agency
+export NEW_LABELS=lon,lat,price,id,revenue,url,residentialUnits,score,sinceInDays,recent,capRate,yield
 sed -e "s/$CURRENT_LABELS/$NEW_LABELS/" data/prospects.csv > data/prospects-labels.csv
 
 

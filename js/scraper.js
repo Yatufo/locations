@@ -87,12 +87,13 @@ describe('real state information', function() {
   //fit('extra test', () => {});
 
   afterAll(() => {
-    const grid = Object.values(getJsonMap(SCRAPED_GRID_FILE));
+    const gridMap = getJsonMap(SCRAPED_GRID_FILE)
+    const grids = Object.keys(gridMap).map((k) => gridMap[k]);
     const details = getJsonMap(SCRAPED_DETAILS_FILE);
     const extras = getJsonMap(SCRAPED_EXTRAS_FILE)
     const rmaxs = getJsonMap(SCRAPED_RMAX_FILE);
 
-    const results = grid.map((g) => {
+    const results = grids.map((g) => {
       g.timestamp = startTime;
       g.recent = g.updated;
       g.updated = g.recent || _.isObject(details[g.id])  || _.isObject(rmaxs[g.id]) || _.isObject(extras[g.id]);
