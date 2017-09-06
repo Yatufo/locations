@@ -13,10 +13,14 @@ function updateCalculatedRatio() {
     var taxRate = (valuation && taxes) ? taxes / valuation : -99;
     var capRate = Math.round((estate.revenue/estate.price) * 100)
     var sinceInDays = Math.round((new Date().getTime() - estate.timestamp) / (24 * 60 * 60 * 1000));
+    var lastUpdateInDays = Math.round((new Date().getTime() - estate.calculated.lastUpdate) / (24 * 60 * 60 * 1000));
 
     db.estates.update({_id: estate._id}, {
-      $set: { "calculated.capRate": capRate,  "calculated.yield": yyield, "calculated.taxRate" : taxRate,
-       "calculated.sinceInDays": sinceInDays
+      $set: { "calculated.capRate": capRate,
+      "calculated.yield": yyield,
+      "calculated.taxRate" : taxRate,
+      "calculated.sinceInDays": sinceInDays,
+      "calculated.lastUpdateInDays": lastUpdateInDays
     }
     });
   });

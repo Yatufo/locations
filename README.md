@@ -18,7 +18,7 @@ Price vs Valuation.
 Surrondings:
   estimate taxes
   comparable properties
-  
+
 
 
 Where to get the coordinates

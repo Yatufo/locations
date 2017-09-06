@@ -7,6 +7,7 @@ url
 residentialUnits
 score
 calculated.sinceInDays
+calculated.lastUpdateInDays
 calculated.recent
 calculated.capRate
 calculated.yield

@@ -19,7 +19,7 @@ function updateDailyVisibility() {
     var timestamp = new Date(updatedEstate.timestamp);
     var calculated = (updatedEstate.calculated || {})
     var recent = updatedEstate.recent || true;
-    updatedEstate.calculated = Object.assign(calculated, { recent : recent, visible : true});
+    updatedEstate.calculated = Object.assign(calculated, { recent : recent, visible : true, lastUpdate : timestamp });
 
     delete updatedEstate._id
     delete updatedEstate.timestamp
@@ -31,7 +31,8 @@ function updateDailyVisibility() {
   //the rest (found but not updated) will be just visible.
   db.updates.find({ updated : false, timestamp : LAST_BATCH_START})
   .forEach(function(updatedEstate){
-    db.estates.update({ id: updatedEstate.id}, { $set: {'calculated.visible': true}});
+    var timestamp = new Date(updatedEstate.timestamp);
+    db.estates.update({ id: updatedEstate.id}, { $set: {'calculated.visible': true, 'calculated.lastUpdate' : timestamp }});
   });
 }
 
